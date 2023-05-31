@@ -1,6 +1,6 @@
-const fs = require("fs");
+import { readFileSync, writeFileSync, existsSync } from "fs";
 
-class ProductManager {
+export default class ProductManager {
 
     constructor(path) {
         this.products = [];
@@ -8,6 +8,12 @@ class ProductManager {
     }
 
     addProduct(title, description, price, thumbnail, code, stock) {
+
+        if (!existsSync(this.path)) {
+            writeFileSync(this.path, JSON.stringify(this.products));
+          }
+        this.products = JSON.parse(readFileSync(this.path, "utf-8"));
+
 
         const product = {
 
@@ -22,6 +28,9 @@ class ProductManager {
         }
 
 
+        this.products = JSON.parse(readFileSync(this.path, "utf-8"));
+
+
         if (!title || !description || !price || !thumbnail || !code || !stock) {
             console.log('Todos los campos deben ser completados')
             return;
@@ -34,14 +43,14 @@ class ProductManager {
         }
 
         this.products.push(product)
-        fs.writeFileSync(this.path, JSON.stringify(this.products));
+        writeFileSync(this.path, JSON.stringify(this.products));
     }
 
     getProducts() {
-        if (!fs.existsSync(this.path))
-            fs.writeFileSync(this.path, JSON.stringify(this.products));
+        if (!existsSync(this.path))
+        writeFileSync(this.path, JSON.stringify(this.products));
 
-        return JSON.parse(fs.readFileSync(this.path, "utf-8"))
+        return JSON.parse(readFileSync(this.path, "utf-8"))
     }
 
 
@@ -85,7 +94,7 @@ class ProductManager {
             return;
         };
         product[field] = value;
-        fs.writeFileSync(this.path, JSON.stringify(products));
+        writeFileSync(this.path, JSON.stringify(products));
 
 
     }
@@ -99,33 +108,42 @@ class ProductManager {
         }
 
         products.splice(productIndex, 1);
-        fs.writeFileSync(this.path, JSON.stringify(products));
+        writeFileSync(this.path, JSON.stringify(products));
 
 
     }
 }
 const product = new ProductManager('productos.json');
-console.log('Como pide la consigna devuelvo un array vacio')
-console.log(product.getProducts());
+//console.log('Como pide la consigna devuelvo un array vacio')
+//console.log(product.getProducts());
 
 console.log('Producto agregado')
-product.addProduct('producto prueba', 'Este es un producto prueba', 200, 'Sin imagen', 'abc123', 25)
-product.addProduct('producto prueba2', 'Este es un producto prueba2', 200, 'Sin imagen', 'abc124', 25)
-console.log(product.getProducts());
+product.addProduct('producto prueba0', 'Este es un producto prueba1', 200, 'Sin imagen', 'abc001', 25)
+product.addProduct('producto prueba2', 'Este es un producto prueba2', 200, 'Sin imagen', 'abc002', 25)
+product.addProduct('producto prueba3', 'Este es un producto prueba3', 200, 'Sin imagen', 'abc003', 25)
+product.addProduct('producto prueba4', 'Este es un producto prueba4', 200, 'Sin imagen', 'abc004', 25)
+product.addProduct('producto prueba5', 'Este es un producto prueba5', 200, 'Sin imagen', 'abc005', 25)
+product.addProduct('producto prueba6', 'Este es un producto prueba6', 200, 'Sin imagen', 'abc006', 25)
+product.addProduct('producto prueba7', 'Este es un producto prueba7', 200, 'Sin imagen', 'abc007', 25)
+product.addProduct('producto prueba8', 'Este es un producto prueba8', 200, 'Sin imagen', 'abc008', 25)
+product.addProduct('producto prueba9', 'Este es un producto prueba9', 200, 'Sin imagen', 'abc009', 25)
+product.addProduct('producto prueba10', 'Este es un producto prueba10', 200, 'Sin imagen', 'abc010', 25)
+product.addProduct('producto prueba11', 'Este es un producto prueba11', 200, 'Sin imagen', 'abc011', 25)
 
-console.log('Buscador de Id')
+//console.log(product.getProducts());
+
+//console.log('Buscador de Id')
 product.getProductById(2)
 
 
-console.log('Producto Actualizado')
-product.updateProduct(1, 'title', 'producto prueba3')
+//console.log('Producto Actualizado')
+product.updateProduct(1, 'title', 'producto prueba1')
+//console.log(product.getProducts());
+
+
+//console.log('Producto eliminado')
+product.deleteProduct(11)
 console.log(product.getProducts());
-
-
-console.log('Producto eliminado')
-product.deleteProduct(1)
-console.log(product.getProducts());
-
 
 
 
