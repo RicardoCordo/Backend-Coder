@@ -1,14 +1,13 @@
 import { Router } from 'express';
-import ProductManager from '../src/products.js';
+import ProductsManager from '../../dao/filesystem/manager/products.js';
 
 const router = Router()
-const productos = new ProductManager('./data/products.json');
-
+const productsData = new ProductsManager('./data/products.json');
 
 
 router.get('/', (req, res) => {
     const { limit } = req.query;
-    const products = productos.getProducts();
+    const products = productsData.getProducts();
     let cantProducts;
     if (limit)
         cantProducts = products.slice(0, limit)
@@ -21,7 +20,7 @@ router.get('/', (req, res) => {
 router.get('/:pid', (req, res) => {
     const { pid } = req.params
 
-    return res.json(productos.getProductById(parseInt(pid)))
+    return res.json(productsData.getProductById(parseInt(pid)))
 });
 
 
@@ -35,13 +34,13 @@ router.post('/', (req, res) => {
 
 router.put('/:pid', (req, res) => {
     const { pid } = req.params;
-    const result = productos.updateProduct(parseInt(pid), req.body);
+    const result = productsData.updateProduct(parseInt(pid), req.body);
     return res.json({ result });
 });
 
 router.delete('/:pid', (req, res) => {
     const { pid } = req.params;
-    const result = productos.deleteProduct(parseInt(pid));
+    const result = productsData.deleteProduct(parseInt(pid));
     return res.json({ result });
 });
 
