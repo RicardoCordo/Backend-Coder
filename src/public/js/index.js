@@ -17,7 +17,7 @@ socket.on("products", products => {
 
 
 let user;
-let chatBox = document.querySelector(".input-text");
+let chatBox = document.querySelector("#chatBox");
 
 Swal.fire({
   title: "Bienvenido",
@@ -45,7 +45,7 @@ chatBox.addEventListener("keyup", (e) => {
 });
 
 socket.on("messagesLogs", data => {
-  let log = document.querySelector(".chat-message");
+  let log = document.querySelector("#messageLogs");
   let messages = "";
   data.forEach(message => {
     messages += `<p><strong>${message.user}</strong>: ${message.message}</p>`;

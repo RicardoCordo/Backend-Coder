@@ -1,15 +1,22 @@
-<div>
-  <h1>Productos</h1>
-  {{#each productos}}
-    <div>
-      <h2>Titulo: {{titulo}}</h2>
-      <ul>
-        <li>Descripcion: {{description}}</li>
-        <li>Codigo: {{code}}</li>
-        <li>Precio: {{price}}</li>
-        <li>Stock: {{stock}}</li>
-        <li>Categoria: {{category}}</li>
-      </ul>
-    </div>
-  {{/each}}
-</div>
+<h1>PRODUCTOS</h1>
+
+{{#each products}}
+<p>{{this.title}}</p>
+<p>{{this.description}}</p>
+<p>{{this.price}}</p>
+<p>{{this.stock}}</p>
+ <button onclick="addToCart('{{../cid}}', '{{_id}}')">Agregar al carrito</button>
+
+<br/>
+{{/each}}
+{{#if hasPrevPage}}
+<a href="/?page={{prevPage}}"><button>Anterior</button></a>
+{{/if}}
+
+{{page}}
+
+{{#if hasNextPage}}
+<a href="/?page={{nextPage}}"><button>Siguiente</button></a>
+{{/if}}
+
+<a href="/api/carts"><button>Ir al carrito</button></a>

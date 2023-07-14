@@ -1,0 +1,11 @@
+{{#each carts}}
+<div>
+    <p>Cart Id: {{_id}}</p>
+    {{#each products}}
+    <p>Producto: {{title}}</p>
+    <p>Id del Producto: {{productId}}</p>
+    <p>quantity: {{quantity}}</p>
+    {{/each}}
+</div>
+{{/each}}
+<a href="/"> <button>Ir al inicio</button></a>

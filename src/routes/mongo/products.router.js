@@ -9,6 +9,7 @@ router.get("/", async (req, res) => {
   res.json({ status: "ok", data: products });
 });
 
+
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
   const product = await productsManager.getProduct(id);

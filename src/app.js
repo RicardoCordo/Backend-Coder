@@ -13,6 +13,7 @@ import cartsRouter from './routes/mongo/cart.router.js'
 import { Server } from "socket.io";
 import products from "./data/products.json" assert { type: "json" };
 
+
 const app = express();
 const connection = await mongoose.connect("mongodb+srv://ricardocordo93:ricardoCoder@cluster0.h0zve9o.mongodb.net/?retryWrites=true&w=majority")
 const port = 8080;
@@ -25,10 +26,9 @@ app.set("view engine", "handlebars");
 app.use(express.json());
 app.use(express.static(__dirname + "/public"));
 
+app.use("/", viewsRouter);
 app.use("/api/products", productsRouter);
 app.use("/chat", views);
-app.use("/", viewsRouter);
-
 app.use("/api/carts", cartsRouter);
 
 
@@ -62,3 +62,4 @@ io.on("connection", (socket) => {
 	});
 
 });
+
