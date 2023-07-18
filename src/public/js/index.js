@@ -36,7 +36,6 @@ Swal.fire({
   socket.emit("user", { user, message: "Se unio al chat." });
 });
 
-//no me toma este addEventListener
 chatBox.addEventListener("keyup", (e) => {
   if (e.key === "Enter") {
     socket.emit("message", { user, message: chatBox.value });

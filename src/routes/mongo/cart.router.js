@@ -19,13 +19,13 @@ router.post("/", async (req, res) => {
     res.status(201).json({ status: "ok", data: createdProduct });
 });
 
-router.post('/:id/product/:productId', async (req, res) => {
+router.post('/:cid/product/:productId', async (req, res) => {
     const cart = await cartsManager.addToCart(req.params.id, req.params.productId)
     res.json({ status: 200, data: cart })
 
 })
 
-router.put('/:id', async (req, res) => {
+router.put('/:cid', async (req, res) => {
     const cart = await cartsManager.updateCart(req.params.id, req.body)
     res.json({ status: 200, data: cart })
 

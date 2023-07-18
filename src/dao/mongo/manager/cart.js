@@ -14,6 +14,7 @@ export default class CartsManager {
 
     };
 
+    // NO LOGRE HACER QUE FUNCIONE PARA AGREGAR A CARRITO
     addToCart = async (cid, productId) => {
 
         const cart = await cartModel.findById(cid);
@@ -26,6 +27,7 @@ export default class CartsManager {
 
       
         await cart.save();
+        console.log('Producto agregado al carrito');
     }
 
     updateCart = async (cid, cart) => {
