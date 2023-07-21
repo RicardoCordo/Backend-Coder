@@ -1,8 +1,16 @@
-<div class="products-container">
-	<h1 >Productos</h1>
+<div>
+    <h1>BIENVENIDO {{user.name}}</h1>
+    <p>Correo: {{user.email}}</p>
+</div>
+
+
+<div >
+	<h1 >Home</h1>
+
 	<ul >
-		{{#each products}}
-			<li>{{this.title}}</li>
-		{{/each}}
+		<li > <a href="/products"><button>Productos</button></a></li>
+		<li > <a href="/carts"><button>Ir al carrito</button></a></li>
+		<li > <a href="/realTimeProducts"><button>Productos en tiempo real</button></li>
+		
 	</ul>
 </div>

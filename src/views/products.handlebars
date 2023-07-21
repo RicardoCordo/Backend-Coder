@@ -1,22 +1,31 @@
-<h1>PRODUCTOS</h1>
+<div>
+    <h1>BIENVENIDO {{user.name}}</h1>
+    <p>Correo: {{user.email}}</p>
+</div>
+
+<div>
+
+<h2>PRODUCTOS</h2>
 
 {{#each products}}
-<p>{{this.title}}</p>
-<p>{{this.description}}</p>
-<p>{{this.price}}</p>
-<p>{{this.stock}}</p>
- <button onclick="addToCart('{{../cid}}', '{{_id}}')">Agregar al carrito</button>
-
-<br/>
+<p>Poducto: {{this.title}}</p>
+<p>Descripcion del producto: {{this.description}}</p>
+<p>Precio: ${{this.price}}</p>
+<p>Stock: {{this.stock}} unidades</p>
+<button onclick="addToCart('{{../cid}}', '{{_id}}')">Agregar al carrito</button>
+{{!-- NO ME TOMA EL addToCart, me dice que no esta definido --}}
+<br />
 {{/each}}
 {{#if hasPrevPage}}
-<a href="/?page={{prevPage}}"><button>Anterior</button></a>
+<a href="/products?page={{prevPage}}"><button>Anterior</button></a>
 {{/if}}
 
 {{page}}
 
 {{#if hasNextPage}}
-<a href="/?page={{nextPage}}"><button>Siguiente</button></a>
+<a href="/products?page={{nextPage}}"><button>Siguiente</button></a>
 {{/if}}
 
-<a href="/api/carts"><button>Ir al carrito</button></a>
+<a href="/carts"><button>Ir al carrito</button></a>
+<a href="/home"><button>Ir al Home</button></a>
+</div>

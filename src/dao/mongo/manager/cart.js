@@ -1,18 +1,17 @@
 import cartModel from "../models/cart.js";
 
 export default class CartsManager {
-    getCarts = () => {
+    getCarts = async () => {
         return cartModel.find().populate('products.productId').lean();
     };
 
-    getCart = (cid) => {
-        return cartModel.findById(cid).populate('products.productId')
+    getCart = async (cid) => {
+        return await cartModel.findById(cid).populate('products.productId')
     };
 
-    createCart = (cart) => {
-        return cartModel.create(cart)
-
-    };
+    createCart = async () => {
+        return await cartModel.create({ products: [] });
+      };
 
     // NO LOGRE HACER QUE FUNCIONE PARA AGREGAR A CARRITO
     addToCart = async (cid, productId) => {
@@ -53,4 +52,4 @@ export default class CartsManager {
     }
 }
 
-
+export const cartsManager = new CartsManager();
