@@ -1,7 +1,12 @@
 <div>
-    <h1>BIENVENIDO {{user.name}}</h1>
-    <p>Correo: {{user.email}}</p>
+  <h1>BIENVENIDO</h1>
+  <h2>{{user.role}}:{{user.name}}</h2>
+  <p>Correo: {{user.email}}</p>
+   <form action="/api/sessions/logout" method="get"> 
+    <button type="submit">Cerrar sesión</button>
+  </form>
 </div>
+
 
 
 <div >

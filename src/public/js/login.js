@@ -14,8 +14,7 @@ form.addEventListener('submit', async (event) => {
     });
     const responseData = await response.json();
     if (responseData.status === 'success') {
-        window.location.replace('/products');
+        window.location.replace('/home');
     }
-/* por algun motivo que no comprendo me aparece el siguiente error en consola:
-VM491:1 Uncaught (in promise) SyntaxError: Unexpected token 'O', "OK" is not valid JSON*/
+
 });

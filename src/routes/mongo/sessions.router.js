@@ -29,8 +29,9 @@ router.post('/login', async (req, res) => {
             email: user.email,
             role: role
         };
-        // el error que me tira en consola al ejecutar el enviar del login es por  el siguiente return
-        return res.status(200).send(`Bienvenido ${role === "admin" ? "admin" : "usuario"}`);
+        
+        
+        res.json({ status: 'success' });
     } catch (err) {
         return res.status(500).json({ error: err.message });
     }
@@ -60,8 +61,9 @@ router.get("/logout", (req, res) => {
     try {
         req.session.destroy((err) => {
             if (!err) {
-                return res.status(200).send(`Se ha deslogueado exitosamente`);
+                return res.redirect("/");
             };
+            
 
             return res.status(500).send("Error al desloguear");
         });

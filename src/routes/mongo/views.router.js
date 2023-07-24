@@ -1,6 +1,6 @@
 import { Router } from "express";
 import productModel from "../../dao/mongo/models/product.js";
-
+import CartsManager from "../../dao/mongo/manager/cart.js";
 const router = Router();
 
 router.get('/', (req, res) => {
@@ -14,6 +14,7 @@ router.get('/register', (req, res) => {
 router.get("/home", async (req, res) => {
   try {
     return await res.status(200).render("home", {
+      user: req.session.user,
       documentTitle: "Home",
     });
   } catch (err) {

@@ -1,19 +1,18 @@
-<div>
-    <h1>BIENVENIDO {{user.name}}</h1>
-    <p>Correo: {{user.email}}</p>
-</div>
 
 <div>
 
-<h2>PRODUCTOS</h2>
-
+<h1>PRODUCTOS</h1>
 {{#each products}}
 <p>Poducto: {{this.title}}</p>
 <p>Descripcion del producto: {{this.description}}</p>
 <p>Precio: ${{this.price}}</p>
 <p>Stock: {{this.stock}} unidades</p>
-<button onclick="addToCart('{{../cid}}', '{{_id}}')">Agregar al carrito</button>
-{{!-- NO ME TOMA EL addToCart, me dice que no esta definido --}}
+<form id="addToCartForm_{{_id}}" method="POST" action="/api/carts/64bef4853b054c088837d69a/product/{{_id}}">
+  <label for="quantity_{{_id}}">Cantidad:</label>
+  <input type="number" name="quantity" id="quantity_{{_id}}" value="1" min="1">
+  <button type="submit">Agregar al carrito</button>
+</form>
+
 <br />
 {{/each}}
 {{#if hasPrevPage}}
