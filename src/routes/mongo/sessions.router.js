@@ -1,41 +1,52 @@
 import { Router } from "express"
-import userModel from "../../dao/mongo/models/user.js"
+import passport from "passport";
 
 const router = Router();
 
-router.post('/register', async (req, res) => {
+router.post('/register', passport.authenticate("register", { failureRedirect: "/failureRedirect" }), async (req, res) => {
     try {
-        const result = await userModel.create(req.body);
-        res.send({ status: "success", payload: result });
+        req.session.user = {
+            first_name: req.user.first_name,
+            last_name: req.user.last_name,
+            email: req.user.email,
+            role: req.user.role,
+        };
+        res.send({ status: "success", message: "Usuario creado" });
     } catch (err) {
         return res.status(500).json({ error: err.message });
     };
 });
 
-router.post('/login', async (req, res) => {
+router.get('/failregister'), async (req, res) => {
+    return res.status(500).send("Failed");
+}
+router.post('/login', passport.authenticate("login", { failureRedirect: "/failureRedirect" }), async (req, res) => {
     try {
-        const { email, password } = req.body;
-        const user = await userModel.findOne({ email, password });
-        if (!user) {
-            return res.status(400).send({ status: "error", error: "Usuario o contraseña incorrectas" });
-        }
-        let role = "usuario";
-
-        if (email === "adminCoder@coder.com" && password === "adminCod3r123") {
-            role = "admin";
-        }
+        if (!req.user) return response.status(400).send({ status: "failed", message: "Usuario o contraseña incorrectos" })
         req.session.user = {
-            name: `${user.first_name} ${user.last_name}`,
-            email: user.email,
-            role: role
+            first_name: req.user.first_name,
+            last_name: req.user.last_name,
+            email: req.user.email,
+            role: req.user.role,
         };
-        
-        
-        res.json({ status: 'success' });
+        return res.status(200).send({ status: 'success', message: "Usuario logeado" });
     } catch (err) {
         return res.status(500).json({ error: err.message });
-    }
+    };
 });
+
+router.get("/github", passport.authenticate("github"), async (req, res) => { });
+
+router.get("/githubcallback", passport.authenticate("github"), async (req, res) => {
+    req.session.user = {
+        first_name: req.user.first_name,
+        last_name: req.user.last_name,
+        email: req.user.email,
+        role: req.user.role,
+    };
+    res.redirect("/");
+}
+);
 
 function auth(req, res, next) {
     try {
@@ -63,7 +74,7 @@ router.get("/logout", (req, res) => {
             if (!err) {
                 return res.redirect("/");
             };
-            
+
 
             return res.status(500).send("Error al desloguear");
         });
@@ -71,6 +82,7 @@ router.get("/logout", (req, res) => {
         return res.status(500).json({ error: err.message });
     };
 });
+
 
 
 

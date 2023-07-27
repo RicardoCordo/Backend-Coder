@@ -1,6 +1,9 @@
 import express from 'express';
 import handlebars from "express-handlebars";
 import mongoose from 'mongoose';
+import passport from 'passport';
+import inizializePassport from './config/passport.config.js';
+
 import __dirname from "./utils.js";
 
 //import carts from './routes/filesystem/carts.router.js'
@@ -41,6 +44,10 @@ app.use(
 		saveUninitialized: true,
 	})
 );
+
+inizializePassport();
+app.use(passport.initialize());
+app.use(passport.session());
 
 
 app.use("/", viewsRouter);

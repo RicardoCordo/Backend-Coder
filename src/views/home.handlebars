@@ -1,6 +1,6 @@
 <div>
   <h1>BIENVENIDO</h1>
-  <h2>{{user.role}}:{{user.name}}</h2>
+  <h2>{{user.role}}:{{user.first_name}} {{user.last_name}}</h2>
   <p>Correo: {{user.email}}</p>
    <form action="/api/sessions/logout" method="get"> 
     <button type="submit">Cerrar sesión</button>
