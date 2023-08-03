@@ -44,7 +44,7 @@ router.get("/githubcallback", passport.authenticate("github"), async (req, res) 
         email: req.user.email,
         role: req.user.role,
     };
-    res.redirect("/");
+    res.redirect("/products");
 }
 );
 
