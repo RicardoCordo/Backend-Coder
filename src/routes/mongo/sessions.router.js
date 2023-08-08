@@ -1,5 +1,6 @@
 import { Router } from "express"
 import passport from "passport";
+import userModel from "../../dao/mongo/models/user.js";
 
 const router = Router();
 
@@ -83,7 +84,21 @@ router.get("/logout", (req, res) => {
     };
 });
 
-
-
+router.get("/current", async (req, res) => {
+    try {
+        if (req.isAuthenticated()) {
+            const user = await userModel.findById(req.user._id); 
+            return res.status(200).render("current", {
+                user: user,
+                documentTitle: "Usuario Actual",
+            });
+             // pongo un console.log("Sesión:", req.session); y si  me imprime los datos correctamente,pero no se porque no me muestra los datos en el current.handlebars
+        } else {
+            return res.status(401).json({ message: "No hay usuario actualmente autenticado" });
+        }
+    } catch (err) {
+        return res.status(500).json({ error: err.message });
+    }
+  });
 
 export default router

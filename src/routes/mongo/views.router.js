@@ -1,6 +1,5 @@
 import { Router } from "express";
 import productModel from "../../dao/mongo/models/product.js";
-import CartsManager from "../../dao/mongo/manager/cart.js";
 const router = Router();
 
 router.get('/', (req, res) => {
@@ -65,7 +64,6 @@ router.get("/realtimeproducts", (req, res) => {
     return res.status(500).json({ error: err.message });
   };
 });
-
 
 
 export default router;

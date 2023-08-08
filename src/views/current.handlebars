@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ documentTitle }}</title>
+</head>
+<body>
+    {{#if user}}
+        <h1>Información del Usuario Actual</h1>
+        <p>Nombre: {{ user.first_name }} {{ user.last_name }}</p>
+        <p>Email: {{ user.email }}</p>
+        <p>Edad: {{ user.age }}</p>
+        <a href="/home"><button>Volver al Inicio</button></a>
+    {{else}}
+     <!-- me ejecuta el else y no el if porque no me toma el usuario -->
+        <p>No hay usuario actualmente autenticado.</p>
+        <a href="/"><button>Iniciar Sesión</button></a>
+    {{/if}}
+</body>
+</html>
