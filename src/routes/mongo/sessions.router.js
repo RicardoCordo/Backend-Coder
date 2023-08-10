@@ -1,6 +1,6 @@
 import { Router } from "express"
 import passport from "passport";
-import userModel from "../../dao/mongo/models/user.js";
+
 
 const router = Router();
 
@@ -10,6 +10,7 @@ router.post('/register', passport.authenticate("register", { failureRedirect: "/
             first_name: req.user.first_name,
             last_name: req.user.last_name,
             email: req.user.email,
+            age: req.user.age,
             role: req.user.role,
         };
         res.send({ status: "success", message: "Usuario creado" });
@@ -28,6 +29,7 @@ router.post('/login', passport.authenticate("login", { failureRedirect: "/failur
             first_name: req.user.first_name,
             last_name: req.user.last_name,
             email: req.user.email,
+            age: req.user.age,
             role: req.user.role,
         };
         return res.status(200).send({ status: 'success', message: "Usuario logeado" });
@@ -75,8 +77,6 @@ router.get("/logout", (req, res) => {
             if (!err) {
                 return res.redirect("/");
             };
-
-
             return res.status(500).send("Error al desloguear");
         });
     } catch (err) {
@@ -86,19 +86,18 @@ router.get("/logout", (req, res) => {
 
 router.get("/current", async (req, res) => {
     try {
-        if (req.isAuthenticated()) {
-            const user = await userModel.findById(req.user._id); 
+        if (req.session.user) {
             return res.status(200).render("current", {
-                user: user,
+                user: req.session.user,
                 documentTitle: "Usuario Actual",
-            });
-             // pongo un console.log("Sesión:", req.session); y si  me imprime los datos correctamente,pero no se porque no me muestra los datos en el current.handlebars
+            })
+                ;
         } else {
             return res.status(401).json({ message: "No hay usuario actualmente autenticado" });
         }
     } catch (err) {
         return res.status(500).json({ error: err.message });
     }
-  });
+});
 
 export default router

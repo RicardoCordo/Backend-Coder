@@ -64,6 +64,22 @@ router.get("/realtimeproducts", (req, res) => {
     return res.status(500).json({ error: err.message });
   };
 });
+router.get("/current", async (req, res) => {
+  try {
+      if (req.session.user) {
+          return res.status(200).render("current", {
+              user: req.session.user,
+              documentTitle: "Usuario Actual",
+          })
+              ;
+      } else {
+          return res.status(401).json({ message: "No hay usuario actualmente autenticado" });
+      }
+  } catch (err) {
+      return res.status(500).json({ error: err.message });
+  }
+});
+
 
 
 export default router;
