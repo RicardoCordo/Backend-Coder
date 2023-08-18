@@ -1,19 +1,18 @@
 import passport from "passport";
 import local from "passport-local";
-import userModel from "../dao/mongo/models/user.js";
+import userModel from "../dao/mongo/models/user.model.js";
 import { createHash, isValidPassword } from "../utils.js";
-import adminModel from "../dao/mongo/models/admin.js";
+import adminModel from "../dao/mongo/models/admin.model.js";
 import GitHubStrategy from "passport-github2";
-
+import config from "./config.js";
 const localStrategy = local.Strategy;
-
 const initializePassport = () => {
     passport.use('register', new localStrategy(
         { passReqToCallback: true, usernameField: "email" }, async (req, username, password, done) => {
             const { first_name, last_name, email, age } = req.body;
             try {
                 const user = await userModel.findOne({ email: username });
-
+                
                 if (user) {
                     return done(null, false, { status: 200, message: "el usuario ya existe" });
                 }
@@ -30,21 +29,23 @@ const initializePassport = () => {
             } catch (error) {
                 return done("Error al obtener el usuario" + error);
             }
-
+            
         }
-    ));
-
-    passport.use('login', new localStrategy({ usernameField: "email" }, async (username, password, done) => {
-        try {
-            if (username == "adminCoder@coder.com" && password == "adminCod3r123") {
-                const user = await adminModel.findOne({ email: username });
-                if (!user) {
-                    const user = await adminModel.create({
-                        email: "adminCoder@coder.com",
-                        password: createHash(password),
-                        role: "admin",
-                    });
-                    return done(null, user);
+        ));
+        
+        const adminEmail =config.adminEmail
+        const adminPass = config.adminPassword
+        passport.use('login', new localStrategy({ usernameField: "email" }, async (username, password, done) => {
+            try {
+                if (username == adminEmail && password == adminPass) {
+                    const user = await adminModel.findOne({ email: username });
+                    if (!user) {
+                        const user = await adminModel.create({
+                            email: adminEmail,
+                            password: createHash(password),
+                            role: "admin",
+                        });
+                        return done(null, user);
                 };
                 return done(null, user);
             };

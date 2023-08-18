@@ -8,27 +8,25 @@ import __dirname from "./utils.js";
 
 //import carts from './routes/filesystem/carts.router.js'
 //import views from './routes/filesystem/views.router.js';
-import { messageModel } from "./dao/mongo/models/messages.js"
-import productsRouter from './routes/mongo/products.router.js'
+import { messageModel } from "./dao/mongo/models/messages.model.js"
 import viewsRouter from './routes/mongo/views.router.js';
 import views from './routes/chat/views.router.js';
-import cartsRouter from './routes/mongo/cart.router.js'
-import sessionsRouter from './routes/mongo/sessions.router.js'
 import cookiesRouter from "./routes/mongo/cookies.router.js";
 import { Server } from "socket.io";
 import products from "./data/products.json" assert { type: "json" };
 import MongoStore from 'connect-mongo';
 import session from 'express-session';
-
+import config from './config/config.js';
+import router from './routes/mongo/index.js'
 
 const app = express();
 app.use(express.json());
 app.use(express.static(__dirname + "/public"));
-
-const connection = await mongoose.connect("mongodb+srv://ricardocordo93:ricardoCoder@cluster0.h0zve9o.mongodb.net/?retryWrites=true&w=majority")
-const port = 8080;
+const connection = await mongoose.connect(config.mongoUrl)
+const port = config.port
 app.use(express.urlencoded({ extended: true }));
 
+app.engine("handlebars", handlebars.engine());
 app.engine("handlebars", handlebars.engine());
 app.set("view engine", "handlebars");
 app.set("views", __dirname + "/views");
@@ -36,10 +34,10 @@ app.set("views", __dirname + "/views");
 app.use(
 	session({
 		store: MongoStore.create({
-			mongoUrl: "mongodb+srv://ricardocordo93:ricardoCoder@cluster0.h0zve9o.mongodb.net/?retryWrites=true&w=majority",
+			mongoUrl: config.mongoUrl,
 			ttl: 1000000000,
 		}),
-		secret: "CoderS3cR3tC0D3",
+		secret: config.secretCode,
 		resave: false,
 		saveUninitialized: true,
 	})
@@ -51,11 +49,9 @@ app.use(passport.session());
 
 
 app.use("/", viewsRouter);
-app.use("/api/sessions", sessionsRouter);
-app.use("/api/products", productsRouter);
 app.use("/cookies", cookiesRouter);
 app.use("/chat", views);
-app.use("/api/carts", cartsRouter);
+app.use("/api", router );
 
 
 
@@ -88,4 +84,3 @@ io.on("connection", (socket) => {
 	});
 
 });
-

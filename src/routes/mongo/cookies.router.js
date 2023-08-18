@@ -1,37 +1,15 @@
 import { Router } from "express";
 import cookieParser from "cookie-parser";
+import config from '../../config/config.js'
+import cookiesController from "../../controllers/cookies.controller.js";
 
 const router = Router();
-router.use(cookieParser("CoderS3cR3tC0D3"));
+router.use(cookieParser(config.secretCode));
 
+router.get("/set", cookiesController.setCookieController);
 
-router.get("/set", (req, res) => {
-    try {
-        res.cookie("Nueva cookie", "Esta es una cookie", {
-            maxAge: 100000,
-            signed: true,
-        });
-        return res.status(200).send(`Nueva cookie definida`);
-    } catch (err) {
-        return res.status(500).json({ error: err.message });
-    };
-});
+router.get("/get",cookiesController.getCookieController);
 
-router.get("/get", (req, res) => {
-    try {
-        return res.status(200).send(req.signedCookies);
-    } catch (err) {
-        return res.status(500).json({ error: err.message });
-    };
-});
-
-router.get("/delete", (req, res) => {
-    try {
-        res.clearCookie("Nueva cookie");
-        return res.status(200).send(`Cookie eliminada`);
-    } catch (err) {
-        return res.status(500).json({ error: err.message });
-    };
-});
+router.get("/delete", cookiesController.deleteCookieController);
 
 export default router;

@@ -1,25 +1,26 @@
-import productModel from "../models/product.js";
+import productModel from "../models/product.model.js";
 
 export default class ProductsManager {
-    getProducts = () => {
+    
+    static getProducts = () => {
         return productModel.find().lean();
     };
 
-    getProduct = (id) => {
+    static getProduct = (id) => {
         return productModel.findById(id)
     };
 
-    createProduct = (product) => {
+    static createProduct = (product) => {
         return productModel.create(product)
 
     };
 
-    updateProduct = (id, product) => {
+    static updateProduct = (id, product) => {
         return productModel.findByIdAndUpdate(id, product)
 
     };
 
-    deleteProduct = (id) => {
+    static deleteProduct = (id) => {
         return productModel.findByIdAndDelete(id)
     };
 
