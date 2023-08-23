@@ -7,8 +7,7 @@ const getProductsController = async (req, res) => {
     } catch (err) {
         return res.status(500).json({ error: err.message });
     }
-}
-
+};
 const getProductIdController = async (req, res) => {
     try {
         const { id } = req.params;
@@ -17,8 +16,7 @@ const getProductIdController = async (req, res) => {
     } catch (err) {
         return res.status(500).json({ error: err.message });
     }
-}
-
+};
 
 const createProductController = async (req, res) => {
     try {
@@ -52,14 +50,14 @@ const updateProductController = async (req, res) => {
 
 const deleteProductController = async (req, res) => {
     try {
-        const { id } = req.params;
-        await ProductsManager.deleteProduct({ _id: id });
-        res.sendStatus(204);
+        return res.status(200).render("realTimeProducts", {
+            documentTitle: "Socket",
+        });
     } catch (err) {
         return res.status(500).json({ error: err.message });
     };
-
 };
+
 
 export default {
     createProductController,
@@ -67,4 +65,4 @@ export default {
     getProductsController,
     getProductIdController,
     deleteProductController
-}
+};
