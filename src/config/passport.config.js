@@ -5,6 +5,7 @@ import { createHash, isValidPassword } from "../utils.js";
 import adminModel from "../dao/mongo/models/admin.model.js";
 import GitHubStrategy from "passport-github2";
 import config from "./config.js";
+
 const localStrategy = local.Strategy;
 const initializePassport = () => {
     passport.use('register', new localStrategy(

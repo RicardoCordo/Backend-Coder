@@ -1,18 +1,19 @@
 import { Router } from "express"
 import passport from "passport";
-import { registerUser, loginUser, logoutUser, currentUser, adminUser } from '../../controllers/sessions.controller.js';
+import sessionsController from "../../controllers/sessions.controller.js";
 import auth from "../../middlewares/auth.middleware.js";
+
 const router = Router();
 
 router.post('/register', passport.authenticate("register", { failureRedirect: "/failureRedirect" }), async (req, res) => {
-    registerUser(req, res);
+    sessionsController.registerUser(req, res);
 });
 
 router.get('/failregister', async (req, res) => {
     return res.status(500).send("Failed");
 });
 router.post('/login', passport.authenticate("login", { failureRedirect: "/failureRedirect" }), async (req, res) => {
-    loginUser(req, res);
+    sessionsController.loginUser(req, res);
 });
 
 router.get("/github", passport.authenticate("github"), async (req, res) => { });
@@ -28,11 +29,8 @@ router.get("/githubcallback", passport.authenticate("github"), async (req, res) 
 }
 );
 
-router.get("/private", auth, adminUser);
-
-router.get("/logout", logoutUser );
-    
-
-router.get("/current", currentUser)
+router.get("/private", auth, sessionsController.adminUser);
+router.get("/logout",sessionsController.logoutUser);
+router.get("/current", sessionsController.currentUser)
 
 export default router

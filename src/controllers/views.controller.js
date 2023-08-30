@@ -1,5 +1,6 @@
 import productModel from "../dao/mongo/models/product.model.js";
 
+
 const getHomeController = async (req, res) => {
     try {
         return await res.status(200).render("home", {
@@ -69,6 +70,7 @@ const getCurrentController = async (req, res) => {
         return res.status(500).json({ error: err.message });
     }
 };
+
 export default {
     getHomeController,
     getProductsViewsController,

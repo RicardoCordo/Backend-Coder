@@ -1,8 +1,9 @@
-import ProductsManager from "../dao/mongo/manager/products.mongoManager.js";
+
+import productsService from "../repositories/index.js"
 
 const getProductsController = async (req, res) => {
     try {
-        const products = await ProductsManager.getProducts();
+        const products = await productsService.getProducts();
         res.json({ status: "success", data: products });
     } catch (err) {
         return res.status(500).json({ error: err.message });
@@ -11,7 +12,7 @@ const getProductsController = async (req, res) => {
 const getProductIdController = async (req, res) => {
     try {
         const { id } = req.params;
-        const product = await ProductsManager.getProduct(id);
+        const product = await productsService.getProduct(id);
         res.json({ status: "success", data: product });
     } catch (err) {
         return res.status(500).json({ error: err.message });
@@ -25,7 +26,7 @@ const createProductController = async (req, res) => {
             return res.status(400).json({ status: "error", message: "Complete todos los campos" });
         }
         const product = req.body;
-        const createdProduct = await ProductsManager.createProduct(product);
+        const createdProduct = await productsService.createProduct(product);
         res.status(200).json({ status: "success", data: createdProduct });
     } catch (err) {
         return res.status(500).json({ error: err.message });
@@ -40,7 +41,7 @@ const updateProductController = async (req, res) => {
         }
         const { id } = req.params;
         const newProduct = req.body;
-        await ProductsManager.updateProduct(id, newProduct);
+        await productsService.updateProduct(id, newProduct);
         res.json({ status: "success", data: newProduct });
     } catch (err) {
         return res.status(500).json({ error: err.message });
@@ -50,9 +51,9 @@ const updateProductController = async (req, res) => {
 
 const deleteProductController = async (req, res) => {
     try {
-        return res.status(200).render("realTimeProducts", {
-            documentTitle: "Socket",
-        });
+        const { id } = req.params;
+		await productsService.deleteProduct({ _id: id });
+        return res.status(200).json({ status: 'success', payload: result });
     } catch (err) {
         return res.status(500).json({ error: err.message });
     };

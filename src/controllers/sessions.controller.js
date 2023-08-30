@@ -1,4 +1,4 @@
-export const registerUser = (req, res) => {
+const registerUser = (req, res) => {
     try {
         req.session.user = {
             first_name: req.user.first_name,
@@ -13,7 +13,7 @@ export const registerUser = (req, res) => {
     };
 };
 
-export const loginUser = (req, res) => {
+ const loginUser = (req, res) => {
     try {
         if (!req.user) return response.status(400).send({ status: "failed", message: "Usuario o contraseña incorrectos" })
         req.session.user = {
@@ -30,7 +30,7 @@ export const loginUser = (req, res) => {
 
 };
 
-export const logoutUser = (req, res) => {
+ const logoutUser = (req, res) => {
     try {
         req.session.destroy((err) => {
             if (!err) {
@@ -44,7 +44,7 @@ export const logoutUser = (req, res) => {
 
 };
 
-export const currentUser = (req, res) => {
+ const currentUser = (req, res) => {
     try {
         if (req.session.user) {
             return res.status(200).render("current", {
@@ -61,7 +61,7 @@ export const currentUser = (req, res) => {
 };
 
 
-export const adminUser = (req, res) => {
+ const adminUser = (req, res) => {
     try {
         return res.status(200).send(`si ves este mensaje es porque sos admin`);
     } catch (err) {
@@ -71,3 +71,10 @@ export const adminUser = (req, res) => {
 };
 
 
+export default {
+    registerUser,
+    loginUser,
+    logoutUser,
+    currentUser,
+    adminUser
+};
