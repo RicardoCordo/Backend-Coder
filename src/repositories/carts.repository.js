@@ -11,39 +11,41 @@ class CartsRepository {
     async getCarts() {
         try {
             console.log("desde el repository");
-            return await this.dao.getCarts();
+            const carts = await this.dao.getCarts();
+            return carts.map(cart => new CartDTO(cart.products));
         } catch (error) {
             throw error;
         }
     }
 
-    async getCart() {
+    async getCart(cid) {
         try {
             console.log("desde el repository");
-            return await this.dao.getCart();
+            const cart = await this.dao.getCart(cid);
+            return new CartDTO(cart.products);
         } catch (error) {
             throw error;
         }
     }
 
 
-    async createCart(cartInfo) {
+    async createCart() {
         try {
             console.log("desde el repository");
-            const newCartInfo = new CartDTO(cartInfo);
-
-            return await this.dao.createCart(newCartInfo);
+            const newCart = await this.dao.createCart({ products: [] });
+            return newCart._id;
         } catch (error) {
             throw error;
         }
     }
 
-    async addToCart() {
+
+    async addToCart(cid, productId, quantity) {
         try {
             console.log("desde el repository");
-            return await this.dao.addToCart();
+            return await this.dao.addToCart(cid, productId, quantity);
         } catch (error) {
-            throw error;
+            console.log(error);
         }
     }
 
@@ -65,14 +67,14 @@ class CartsRepository {
     }
 
 
-async removeFromCart() {
-    try {
-        console.log("desde el repository");
-        return await this.dao.removeFromCart();
-    } catch (error) {
-        throw error;
+    async removeFromCart() {
+        try {
+            console.log("desde el repository");
+            return await this.dao.removeFromCart();
+        } catch (error) {
+            throw error;
+        }
     }
-}
 }
 
 

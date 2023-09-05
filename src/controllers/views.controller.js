@@ -18,6 +18,8 @@ const getProductsViewsController = async (req, res) => {
             await productModel.paginate({}, { page, limit: 5, lean: true });
         const products = docs;
         const user = req.session.user || null;
+        const cart = user ? user.cart : null;
+        console.log("User Cart:", cart);
         res.render("products", {
             products,
             page: rest.page,
@@ -28,6 +30,7 @@ const getProductsViewsController = async (req, res) => {
             prevPage,
             nextPage,
             user: user,
+            cart: cart,
 
         });
     } catch (err) {

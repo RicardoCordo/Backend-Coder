@@ -1,10 +1,21 @@
 
-import productsService from "../repositories/index.js"
+import productsService from "../repositories/index.products.js"
 
 const getProductsController = async (req, res) => {
     try {
+
+        const user = req.session.user;
         const products = await productsService.getProducts();
-        res.json({ status: "success", data: products });
+
+        res.render('products', {
+            user,
+            products,
+            totalPages: totalPages, 
+            hasPrevPage: hasPrevPage, 
+            hasNextPage: hasNextPage, 
+            prevPage: prevPage, 
+            nextPage: nextPage, 
+        });
     } catch (err) {
         return res.status(500).json({ error: err.message });
     }
@@ -52,7 +63,7 @@ const updateProductController = async (req, res) => {
 const deleteProductController = async (req, res) => {
     try {
         const { id } = req.params;
-		await productsService.deleteProduct({ _id: id });
+        await productsService.deleteProduct({ _id: id });
         return res.status(200).json({ status: 'success', payload: result });
     } catch (err) {
         return res.status(500).json({ error: err.message });

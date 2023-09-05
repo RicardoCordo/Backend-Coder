@@ -5,6 +5,7 @@ import { createHash, isValidPassword } from "../utils.js";
 import adminModel from "../dao/mongo/models/admin.model.js";
 import GitHubStrategy from "passport-github2";
 import config from "./config.js";
+import cartsService from "../repositories/index.carts.js";
 
 const localStrategy = local.Strategy;
 const initializePassport = () => {
@@ -25,8 +26,16 @@ const initializePassport = () => {
                     password: createHash(password),
                     role: "user",
                 }
-                let result = await userModel.create(newUser);
-                return done(null, result, { message: "Usuario creado" });
+                try {
+                    const user = await userModel.create(newUser);
+                    const newCart = await cartsService.createCart();
+                    user.cart = newCart._id;
+                    await user.save();
+    
+                    return done(null, user, { message: "Usuario creado" });
+                } catch (error) {
+                    return done("Error al crear el usuario" + error);
+                }
             } catch (error) {
                 return done("Error al obtener el usuario" + error);
             }
@@ -86,11 +95,9 @@ const initializePassport = () => {
                         };
                         const result = await userModel.create(newUser);
                         req.session.user = result;
-                        console.log("Nuevo usuario creado:", result.first_name, result.last_name, result.email);
                         return done(null, result);
                     } else {
                         req.session.user = user;
-                        console.log("Usuario encontrado:", user.first_name, user.last_name, user.email);
                         return done(null, user);
                     }
                 } catch (error) {

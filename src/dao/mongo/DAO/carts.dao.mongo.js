@@ -7,49 +7,59 @@ export default class CartsDAO {
             return cartModel.find().populate('products.productId').lean();
 
         } catch (error) {
-            return res.status(500).json({ error: err.message });
+            throw error;
         }
     };
 
     async getCart(cid) {
         try {
-            return await cartModel.findById(cid).populate('products.productId')
-
+            const cart = await cartModel.findById(cid).populate('products.productId');
+            return cart;
         } catch (error) {
-            return res.status(500).json({ error: err.message });
+            throw error;
         }
-    };
-
+    }
     async createCart() {
         try {
-            return await cartModel.create({ products: [] });
+            const createdCart = await cartModel.create({ products: [] });
+            return createdCart;
         } catch (error) {
-            return res.status(500).json({ error: err.message });
+            throw error;
         }
-    };
-
+    }
     async addToCart(cid, productId) {
 
         try {
+            console.log (cid)
             const cart = await cartModel.findById(cid);
-            const existingProduct = cart.products.find(products => products.productId.toString() === productId);
-            if (existingProduct) {
-                existingProduct.quantity += 1;
-            } else {
-                cart.products.push({ productId, quantity: 1 });
+            if (!cart) {
+                throw new Error('No se encontró un carrito con el ID especificado.');
             }
+            
+                cart.products.push({ productId, quantity: 1 });
+                           
             await cart.save();
+
         } catch (error) {
-            return res.status(500).json({ error: err.message });
+            throw error
         }
 
+    };
+
+    async getCartByUserId(userId) {
+        try {
+            const cart = await cartModel.findOne({ user: userId }).populate('products.productId').lean();
+            return cart;
+        } catch (error) {
+            throw error;
+        }
     };
 
     async updateCart(req, res) {
         try {
             return await cartModel.findByIdAndUpdate(req.params.cid, req.params.cart, { new: true });
         } catch (error) {
-            return res.status(500).json({ error: err.message });
+            throw error;
         }
     };
 
@@ -57,7 +67,7 @@ export default class CartsDAO {
         try {
             return cartModel.findByIdAndDelete(req.params.cid);
         } catch (error) {
-            return res.status(500).json({ error: err.message });
+            throw error;
         }
     };
 
@@ -76,7 +86,7 @@ export default class CartsDAO {
                 console.log("Este producto no esta en el carrito");
             }
         } catch (error) {
-            return res.status(500).json({ error: err.message });
+            throw error;
         }
     };
 }

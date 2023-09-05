@@ -30,7 +30,7 @@ router.get("/githubcallback", passport.authenticate("github"), async (req, res) 
 );
 
 router.get("/private", auth, sessionsController.adminUser);
-router.get("/logout",sessionsController.logoutUser);
-router.get("/current", sessionsController.currentUser)
+router.get("/logout", sessionsController.logoutUser);
+router.get("/current", auth, sessionsController.currentUser)
 
 export default router

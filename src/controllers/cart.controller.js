@@ -1,23 +1,26 @@
-import cartsService from "../repositories/index.js"
+import cartsService from "../repositories/index.carts.js"
 import productModel from "../dao/mongo/models/product.model.js"
 import { v4 as uuidv4 } from 'uuid';
 import ticketModel from "../dao/mongo/models/ticket.model.js"
 import userModel from "../dao/mongo/models/user.model.js";
+import CartDTO from "../DTOs/cart.dto.js";
 
 
 const getCartsController = async (req, res) => {
     try {
         const carts = await cartsService.getCarts(req, res, req.query);
-        return res.status(200).json({ status: "success", carts });
+        const cartDTOs = carts.map(cart => new CartDTO(cart.products));
+        return res.status(200).json({ status: "success", carts: cartDTOs });
     } catch (err) {
         return res.status(500).json({ error: err.message });
-    };
+    }
 }
 
 const getCartController = async (req, res) => {
     try {
         const cart = await cartsService.getCart(req.params.cid);
-        return res.status(200).json({ status: "success", data: cart });
+        const cartDTO = new CartDTO(cart.products);
+        return res.status(200).json({ status: "success", data: cartDTO });
     } catch (err) {
         return res.status(500).json({ error: err.message });
     };
@@ -36,17 +39,28 @@ const createCartController = async (req, res) => {
 
 const productAddCartController = async (req, res) => {
     try {
-        const cart = await cartsService.addToCart(req.params.cid, req.params.productId)
-        return res.status(200).json({ status: "success", data: cart })
+        let cid = req.params.cid;
+        const productId = req.params.productId;
+        const quantity = req.body.quantity;
+
+        if (!cid) {
+            return res.status(400).json({ error: 'El usuario no tiene un carrito asignado.' });
+        }
+
+        if (!productId || typeof quantity !== 'number' || quantity <= 0) {
+            return res.status(400).json({ error: 'La cantidad del producto es inválida.' });
+        }
+
+        const cart = await cartsService.addToCart(cid, productId, quantity);
+        return res.status(200).json({ status: "success", data: cart });
     } catch (err) {
         return res.status(500).json({ error: err.message });
-    };
-
+    }
 }
-
 const updateCartController = async (req, res) => {
     try {
-        const cart = await cartsService.updateCart(req.params.cid, req.body)
+        const cid = req.params.cid;
+        const cart = await cartsService.updateCart(cid, req.body)
         return res.status(200).json({ status: "success", data: cart })
     } catch (err) {
         return res.status(500).json({ error: err.message });
@@ -127,13 +141,18 @@ const purchaseCartController = async (req, res) => {
 
         const ticketCode = uuidv4();
 
-        const user = await userModel.findById(req.user.id);
+        if (!req.user || !req.user.cid) {
+            return res.status(401).json({ message: 'Usuario no autenticado.' });
+        }
+        const user = await userModel.findById(req.user.cid);
+
 
         if (!user) {
             return res.status(400).json({ message: 'El usuario no existe.' });
         }
 
         const totalAmount = calculateTotalAmount(cart);
+
         const ticket = new ticketModel({
             code: ticketCode,
             purchase_datetime: new Date(),
@@ -144,7 +163,8 @@ const purchaseCartController = async (req, res) => {
 
         cart.products = [];
         await cartsService.updateCart(cartId, cart);
-        return res.status(200).json({ message: 'Compra exitosa.', ticket });
+        const cartDTO = new CartDTO(cart.products);
+        return res.status(200).json({ message: 'Compra exitosa.', ticket, cart: cartDTO });
     } catch (error) {
         console.error(error);
         return res.status(500).json({ message: 'Error interno del servidor.' });
