@@ -7,6 +7,7 @@ import CartDTO from "../DTOs/cart.dto.js";
 import CustomError from "../errors/CustomError.js";
 import { addProductToCartErrorInfo } from "../errors/info.js";
 import EErrors from "../errors/enums.js";
+import UserDTO from "../DTOs/user.dto.js";
 
 
 
@@ -54,7 +55,7 @@ const productAddCartController = async (req, res) => {
         if (!productId || typeof quantity !== 'number' || quantity <= 0) {
             CustomError.createError({
                 name: "Error al agregar producto al carrito",
-                cause: addProductToCartErrorInfo({ productId, quantity}),
+                cause: addProductToCartErrorInfo({ productId, quantity }),
                 message: "Error al intentar agregar producto al carrito",
                 code: EErrors.INVALID_TYPES_ERROR,
             });
@@ -120,7 +121,6 @@ const calculateTotalAmount = async (cart) => {
     }
 
 
-    
 
     return totalAmount;
 };
@@ -132,6 +132,7 @@ const purchaseCartController = async (req, res) => {
         if (!cart || cart.products.length === 0) {
             return res.status(400).json({ message: 'El carrito está vacío.' });
         }
+
 
         const productsToUpdate = [];
 
@@ -153,17 +154,17 @@ const purchaseCartController = async (req, res) => {
         await Promise.all(productsToUpdate.map(product => product.save()));
 
         const ticketCode = uuidv4();
-        console.log(req.user._id)// no me reconoce el usuario
-        const user = await userModel.findById(req.user._id);
-        
 
+        const user = req.session.user;
 
-        if (!user) {
+        if (!req.session.user) {
             return res.status(400).json({ message: 'El usuario no existe.' });
         }
 
-        const totalAmount = calculateTotalAmount(cart);
-
+        const totalAmount = await calculateTotalAmount(cart);
+        if (isNaN(totalAmount)) {
+            throw new Error('El monto total no es un número válido.');
+        }
         const ticket = new ticketModel({
             code: ticketCode,
             purchase_datetime: new Date(),
@@ -174,6 +175,7 @@ const purchaseCartController = async (req, res) => {
 
         cart.products = [];
         await cartsService.updateCart(cartId, cart);
+
         const cartDTO = new CartDTO(cart.products);
         return res.status(200).json({ message: 'Compra exitosa.', ticket, cart: cartDTO });
     } catch (error) {

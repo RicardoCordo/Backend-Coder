@@ -49,10 +49,10 @@ class CartsRepository {
         }
     }
 
-    async updateCart() {
+    async updateCart(cartId, cart) {
         try {
             console.log("desde el repository");
-            return await this.dao.updateCart();
+            return await this.dao.updateCart(cartId, cart);
         } catch (error) {
             throw error;
         }

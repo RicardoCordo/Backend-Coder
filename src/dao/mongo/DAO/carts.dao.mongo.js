@@ -27,16 +27,22 @@ export default class CartsDAO {
             throw error;
         }
     }
-    async addToCart(cid, productId) {
+    async addToCart(cid, productId, quantity = 1) {
 
         try {
             const cart = await cartModel.findById(cid);
             if (!cart) {
                 throw new Error('No se encontró un carrito con el ID especificado.');
             }
-            
-                cart.products.push({ productId, quantity: 1 });
-                           
+            const existingProductIndex = cart.products.findIndex(product => product.productId.toString === productId);
+
+            if (existingProductIndex !== -1) {
+                cart.products[existingProductIndex].quantity += quantity;
+
+            } else {
+                cart.products.push({ productId, quantity });
+            }
+
             await cart.save();
         } catch (error) {
             throw error
@@ -53,9 +59,9 @@ export default class CartsDAO {
         }
     };
 
-    async updateCart(req, res) {
+    async updateCart(cartId, cart) {
         try {
-            return await cartModel.findByIdAndUpdate(req.params.cid, req.params.cart, { new: true });
+            return await cartModel.findByIdAndUpdate(cartId, cart, { new: true });
         } catch (error) {
             throw error;
         }
