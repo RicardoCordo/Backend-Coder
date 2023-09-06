@@ -4,6 +4,10 @@ import { v4 as uuidv4 } from 'uuid';
 import ticketModel from "../dao/mongo/models/ticket.model.js"
 import userModel from "../dao/mongo/models/user.model.js";
 import CartDTO from "../DTOs/cart.dto.js";
+import CustomError from "../errors/CustomError.js";
+import { addProductToCartErrorInfo } from "../errors/info.js";
+import EErrors from "../errors/enums.js";
+
 
 
 const getCartsController = async (req, res) => {
@@ -48,7 +52,12 @@ const productAddCartController = async (req, res) => {
         }
 
         if (!productId || typeof quantity !== 'number' || quantity <= 0) {
-            return res.status(400).json({ error: 'La cantidad del producto es inválida.' });
+            CustomError.createError({
+                name: "Error al agregar producto al carrito",
+                cause: addProductToCartErrorInfo({ productId, quantity}),
+                message: "Error al intentar agregar producto al carrito",
+                code: EErrors.INVALID_TYPES_ERROR,
+            });
         }
 
         const cart = await cartsService.addToCart(cid, productId, quantity);
@@ -81,6 +90,7 @@ const deleteCartController = async (req, res) => {
 
 const deleteProductCartController = async (req, res) => {
     try {
+        console.log(req.params.cid)
         const cart = await cartsService.removeFromCart(req.params.cid, req.params.productId)
         return res.status(200).json({ status: "success", data: cart })
     } catch (err) {
@@ -108,6 +118,9 @@ const calculateTotalAmount = async (cart) => {
         const subtotal = productPrice * quantity;
         totalAmount += subtotal;
     }
+
+
+    
 
     return totalAmount;
 };
@@ -140,11 +153,9 @@ const purchaseCartController = async (req, res) => {
         await Promise.all(productsToUpdate.map(product => product.save()));
 
         const ticketCode = uuidv4();
-
-        if (!req.user || !req.user.cid) {
-            return res.status(401).json({ message: 'Usuario no autenticado.' });
-        }
-        const user = await userModel.findById(req.user.cid);
+        console.log(req.user._id)// no me reconoce el usuario
+        const user = await userModel.findById(req.user._id);
+        
 
 
         if (!user) {

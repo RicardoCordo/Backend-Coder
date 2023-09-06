@@ -2,7 +2,6 @@ function roleAuth(role) {
     return (req, res, next) => {
       try {
         if (req.session.user) {
-          console.log(req.session.user.role)
           const userRole = req.session.user.role;
           if (userRole === role) {
             next(); 

@@ -1,7 +1,7 @@
 import { Router } from "express";
 import cartController from "../../controllers/cart.controller.js";
 import roleAuth from "../../middlewares/roleAuth.middleware.js";
-import authCompra from "../../middlewares/authCompra.middleware.js";
+import isAuthenticated from "../../middlewares/authCompra.middleware.js"
 
 
 
@@ -16,6 +16,6 @@ router.post('/:cid/product/:productId', roleAuth('user'), cartController.product
 router.put('/:cid', cartController.updateCartController);
 router.delete('/:cid', cartController.deleteCartController,);
 router.delete('/:cid/product/:productId', cartController.deleteProductCartController);
-router.post('/:cid/purchase', authCompra, cartController.purchaseCartController);
+router.post('/:cid/purchase', isAuthenticated, cartController.purchaseCartController);
 
 export default router;

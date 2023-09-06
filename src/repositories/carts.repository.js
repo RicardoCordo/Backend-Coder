@@ -32,7 +32,7 @@ class CartsRepository {
     async createCart() {
         try {
             console.log("desde el repository");
-            const newCart = await this.dao.createCart({ products: [] });
+            const newCart = await this.dao.createCart();
             return newCart._id;
         } catch (error) {
             throw error;

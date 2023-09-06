@@ -10,7 +10,7 @@
   <p>Descripcion del producto: {{this.description}}</p>
   <p>Precio: ${{this.price}}</p>
   <p>Stock: {{this.stock}} unidades</p>
-    <form id="addToCartForm_{{_id}}" method="POST" action="/api/cart/64f657192e40a6a5d5b8f6de/product/{{_id}}">
+    <form id="addToCartForm_{{_id}}" method="POST" action="/api/cart/64f7a414b216410cf7c3dedf/product/{{_id}}">
     {{!-- no me renderiza {{user.cart}} por eso inclui manualmente el carrito --}}
     <label for="quantity_{{_id}}">Cantidad:</label>
     <input type="number" name="quantity" id="quantity_{{_id}}" value="1" min="1">
@@ -29,9 +29,9 @@
   <a href="/products?page={{nextPage}}"><button>Siguiente</button></a>
   {{/if}}
 
-  <a href="/api/cart/{{user.cart}}"><button>Ir al carrito</button></a>
+  <a href="/api/cart/64f7a414b216410cf7c3dedf"><button>Ir al carrito</button></a>
   <a href="/home"><button>Ir al Home</button></a>
-  <form method="POST" action="/api/cart/64f657192e40a6a5d5b8f6de/purchase">
+  <form method="POST" action="/api/cart/64f7a414b216410cf7c3dedf/purchase">
   {{!-- no me renderiza {{user.cart}} por eso inclui manualmente el carrito --}}
     <button type="submit">Comprar</button>
 </form>

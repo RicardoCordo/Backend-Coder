@@ -30,7 +30,6 @@ export default class CartsDAO {
     async addToCart(cid, productId) {
 
         try {
-            console.log (cid)
             const cart = await cartModel.findById(cid);
             if (!cart) {
                 throw new Error('No se encontró un carrito con el ID especificado.');
@@ -39,7 +38,6 @@ export default class CartsDAO {
                 cart.products.push({ productId, quantity: 1 });
                            
             await cart.save();
-
         } catch (error) {
             throw error
         }

@@ -14,7 +14,7 @@ const initializePassport = () => {
             const { first_name, last_name, email, age } = req.body;
             try {
                 const user = await userModel.findOne({ email: username });
-                
+
                 if (user) {
                     return done(null, false, { status: 200, message: "el usuario ya existe" });
                 }
@@ -25,13 +25,13 @@ const initializePassport = () => {
                     age,
                     password: createHash(password),
                     role: "user",
+
                 }
                 try {
                     const user = await userModel.create(newUser);
                     const newCart = await cartsService.createCart();
                     user.cart = newCart._id;
                     await user.save();
-    
                     return done(null, user, { message: "Usuario creado" });
                 } catch (error) {
                     return done("Error al crear el usuario" + error);
@@ -39,23 +39,23 @@ const initializePassport = () => {
             } catch (error) {
                 return done("Error al obtener el usuario" + error);
             }
-            
+
         }
-        ));
-        
-        const adminEmail =config.adminEmail
-        const adminPass = config.adminPassword
-        passport.use('login', new localStrategy({ usernameField: "email" }, async (username, password, done) => {
-            try {
-                if (username == adminEmail && password == adminPass) {
-                    const user = await adminModel.findOne({ email: username });
-                    if (!user) {
-                        const user = await adminModel.create({
-                            email: adminEmail,
-                            password: createHash(password),
-                            role: "admin",
-                        });
-                        return done(null, user);
+    ));
+
+    const adminEmail = config.adminEmail
+    const adminPass = config.adminPassword
+    passport.use('login', new localStrategy({ usernameField: "email" }, async (username, password, done) => {
+        try {
+            if (username == adminEmail && password == adminPass) {
+                const user = await adminModel.findOne({ email: username });
+                if (!user) {
+                    const user = await adminModel.create({
+                        email: adminEmail,
+                        password: createHash(password),
+                        role: "admin",
+                    });
+                    return done(null, user);
                 };
                 return done(null, user);
             };
@@ -82,7 +82,7 @@ const initializePassport = () => {
                 callbackURL: "http://localhost:8080/api/sessions/githubcallback",
                 passReqToCallback: true,
             },
-            async (req,accessToken, refreshToken, profile, done) => {
+            async (req, accessToken, refreshToken, profile, done) => {
                 try {
                     const user = await userModel.findOne({ email: profile._json.email });
                     if (!user) {

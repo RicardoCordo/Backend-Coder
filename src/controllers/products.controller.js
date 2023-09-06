@@ -1,4 +1,7 @@
 
+import CustomError from "../errors/CustomError.js";
+import EErrors from "../errors/enums.js";
+import { generateProductErrorInfo, updateProductErrorInfo } from "../errors/info.js";
 import productsService from "../repositories/index.products.js"
 
 const getProductsController = async (req, res) => {
@@ -7,15 +10,7 @@ const getProductsController = async (req, res) => {
         const user = req.session.user;
         const products = await productsService.getProducts();
 
-        res.render('products', {
-            user,
-            products,
-            totalPages: totalPages, 
-            hasPrevPage: hasPrevPage, 
-            hasNextPage: hasNextPage, 
-            prevPage: prevPage, 
-            nextPage: nextPage, 
-        });
+        return res.status(200).json({ status: 'success', payload: user, products });
     } catch (err) {
         return res.status(500).json({ error: err.message });
     }
@@ -34,7 +29,12 @@ const createProductController = async (req, res) => {
     try {
         const { title, description, code, price, stock, category } = req.body;
         if (!title || !description || !code || !price || !stock || !category) {
-            return res.status(400).json({ status: "error", message: "Complete todos los campos" });
+            CustomError.createError({
+                name: "Error al crear producto",
+                cause: generateProductErrorInfo({ title, description, code, price, stock, category }),
+                message: "Erroral intentar crear producto",
+                code: EErrors.INVALID_TYPES_ERROR,
+            })
         }
         const product = req.body;
         const createdProduct = await productsService.createProduct(product);
@@ -48,8 +48,14 @@ const updateProductController = async (req, res) => {
     try {
         const { title, description, code, price, stock, category } = req.body;
         if (!title || !description || !code || !price || !stock || !category) {
-            return res.status(400).json({ status: "error", message: "Complete todos los campos" });
-        }
+            CustomError.createError({
+                name: "Error al cambiar producto",
+                cause: updateProductErrorInfo({ title, description, code, price, stock, category }),
+                message: "Erroral intentar cambiar producto",
+                code: EErrors.INVALID_TYPES_ERROR,
+            })
+        };
+        
         const { id } = req.params;
         const newProduct = req.body;
         await productsService.updateProduct(id, newProduct);

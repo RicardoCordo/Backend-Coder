@@ -20,7 +20,7 @@ import session from 'express-session';
 import config from './config/config.js';
 import router from './routes/mongo/index.js'
 import connectDB from '../db/index.js';
-
+import errorHanler from "./errors/index.js"
 const port = config.port
 
 
@@ -55,6 +55,7 @@ app.use(
 	
 	connectDB();
 	router(app)
+	app.use(errorHanler)
 	
 	
 	
