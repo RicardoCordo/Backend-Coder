@@ -1,5 +1,6 @@
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import ProductManager from './products.js';
+import logger from '../../../utils/logger.js';
 
 export default class Cart {
 
@@ -25,7 +26,7 @@ export default class Cart {
 
             return data;
         } catch (error) {
-            console.log(error);
+            logger.error(error);
         }
     }
 
@@ -39,7 +40,7 @@ export default class Cart {
             writeFileSync(this.path, JSON.stringify(this.carts));
             return 'Carrito creado exitosamente';
         } catch (error) {
-            console.log(error);
+            logger.error(error);
         }
     }
 
@@ -88,7 +89,7 @@ export default class Cart {
             return mensaje
 
         } catch (error) {
-            console.log(error);
+            logger.error(error);
         }
     }
 }

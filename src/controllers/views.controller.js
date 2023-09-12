@@ -19,7 +19,6 @@ const getProductsViewsController = async (req, res) => {
         const products = docs;
         const user = req.session.user || null;
         const cart = user ? user.cart : null;
-        console.log("User Cart:", cart);
         res.render("products", {
             products,
             page: rest.page,

@@ -1,3 +1,4 @@
+import logger from "../../../utils/logger.js";
 import userModel from "../models/user.model.js";
 
 export default class UsersDAO {
@@ -7,7 +8,7 @@ export default class UsersDAO {
         try {
             return userModel.find().lean();
         } catch (error) {
-            throw error;
+            logger.error (error);
         }
     };
 
@@ -15,7 +16,7 @@ export default class UsersDAO {
         try {
             return userModel.findById(id);
         } catch (error) {
-            throw error;
+            logger.error (error);
         }
     };
 
@@ -23,7 +24,7 @@ export default class UsersDAO {
         try {
             return userModel.create(user);
         } catch (error) {
-            throw error;
+            logger.error (error);
         }
     };
 
@@ -31,7 +32,7 @@ export default class UsersDAO {
         try {
             return userModel.findByIdAndUpdate(id, user);
         } catch (error) {
-            throw error;
+            logger.error (error);
         }
     };
 
@@ -39,7 +40,7 @@ export default class UsersDAO {
         try {
             return userModel.findByIdAndDelete(id);
         } catch (error) {
-            throw error;
+            logger.error (error);
         }
     };
 }

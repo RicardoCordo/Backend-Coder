@@ -4,7 +4,7 @@ function auth(req, res, next) {
         if (req.session?.user?.role === "admin") {
             return next();
         } else {
-            throw new Error(`Unauthorized`);
+            logger.warning(`Unauthorized`);
         }
     } catch (err) {
         return res.status(401).send(`Solo los administradores pueden ver esta página`);

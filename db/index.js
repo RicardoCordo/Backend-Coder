@@ -1,15 +1,16 @@
 import mongoose from 'mongoose';
 import config from "../src/config/config.js";
+import logger from '../src/utils/logger.js';
 const connectDB = async () => {
     try {
         await mongoose.connect(config.mongoUrl, {
             useNewUrlParser: true,
             useUnifiedTopology: true
         });
-        console.log("Connected to MongoDB")
+        logger.info("Connected to MongoDB")
     }
     catch (err) {
-        console.log(err.message);
+        logger.error(err.message);
     };
 }
 

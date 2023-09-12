@@ -6,7 +6,6 @@ class ProductDTO {
         this.price = product.price;
         this.status = true;
         this.category = product.category
-        console.log("usando el DTO");
     }
 }
 

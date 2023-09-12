@@ -6,7 +6,7 @@ import cookiesRouter from './cookies.router.js'
 import views from '../chat/views.router.js'
 import mokingRouter from '../../mock/product.mocking.router.js'
 import roleAuth from '../../middlewares/roleAuth.middleware.js'
-
+import logger from '../../routes/mongo/logger.router.js'
 const router = app =>{
     app.use("/", viewsRouter);
 	app.use("/cookies", cookiesRouter);
@@ -15,6 +15,7 @@ const router = app =>{
     app.use ('/api/products', productRouter);
     app.use('/api/cart', cartRouter)
     app.use ('/mockingproducts', mokingRouter)
+    app.use('/loggerTest', logger)
 }
 
 

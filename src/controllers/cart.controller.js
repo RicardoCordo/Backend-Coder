@@ -2,12 +2,11 @@ import cartsService from "../repositories/index.carts.js"
 import productModel from "../dao/mongo/models/product.model.js"
 import { v4 as uuidv4 } from 'uuid';
 import ticketModel from "../dao/mongo/models/ticket.model.js"
-import userModel from "../dao/mongo/models/user.model.js";
 import CartDTO from "../DTOs/cart.dto.js";
 import CustomError from "../errors/CustomError.js";
 import { addProductToCartErrorInfo } from "../errors/info.js";
 import EErrors from "../errors/enums.js";
-import UserDTO from "../DTOs/user.dto.js";
+import logger from "../utils/logger.js";
 
 
 
@@ -91,7 +90,6 @@ const deleteCartController = async (req, res) => {
 
 const deleteProductCartController = async (req, res) => {
     try {
-        console.log(req.params.cid)
         const cart = await cartsService.removeFromCart(req.params.cid, req.params.productId)
         return res.status(200).json({ status: "success", data: cart })
     } catch (err) {
@@ -108,12 +106,12 @@ const calculateTotalAmount = async (cart) => {
         const productDetails = await productModel.findById(productId);
 
         if (!productDetails) {
-            throw new Error(`Producto con ID ${productId} no encontrado.`);
+            logger.warning(`Producto con ID ${productId} no encontrado.`);
         }
 
         const productPrice = parseFloat(productDetails.price);
         if (!productDetails.status) {
-            throw new Error(`El producto con ID ${productId} no está disponible.`);
+            logger.warning(`El producto con ID ${productId} no está disponible.`);
         }
 
         const subtotal = productPrice * quantity;
@@ -163,7 +161,7 @@ const purchaseCartController = async (req, res) => {
 
         const totalAmount = await calculateTotalAmount(cart);
         if (isNaN(totalAmount)) {
-            throw new Error('El monto total no es un número válido.');
+            logger.warning('El monto total no es un número válido.');
         }
         const ticket = new ticketModel({
             code: ticketCode,

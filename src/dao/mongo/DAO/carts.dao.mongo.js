@@ -1,3 +1,4 @@
+import logger from "../../../utils/logger.js";
 import cartModel from "../models/cart.model.js";
 
 export default class CartsDAO {
@@ -7,7 +8,7 @@ export default class CartsDAO {
             return cartModel.find().populate('products.productId').lean();
 
         } catch (error) {
-            throw error;
+            logger.error (error);
         }
     };
 
@@ -16,7 +17,7 @@ export default class CartsDAO {
             const cart = await cartModel.findById(cid).populate('products.productId');
             return cart;
         } catch (error) {
-            throw error;
+            logger.error (error);
         }
     }
     async createCart() {
@@ -24,7 +25,7 @@ export default class CartsDAO {
             const createdCart = await cartModel.create({ products: [] });
             return createdCart;
         } catch (error) {
-            throw error;
+            logger.error (error);
         }
     }
     async addToCart(cid, productId, quantity = 1) {
@@ -32,7 +33,7 @@ export default class CartsDAO {
         try {
             const cart = await cartModel.findById(cid);
             if (!cart) {
-                throw new Error('No se encontró un carrito con el ID especificado.');
+                logger.warning('No se encontró un carrito con el ID especificado.');
             }
             const existingProductIndex = cart.products.findIndex(product => product.productId.toString === productId);
 
@@ -45,7 +46,7 @@ export default class CartsDAO {
 
             await cart.save();
         } catch (error) {
-            throw error
+            logger.error (error)
         }
 
     };
@@ -55,7 +56,7 @@ export default class CartsDAO {
             const cart = await cartModel.findOne({ user: userId }).populate('products.productId').lean();
             return cart;
         } catch (error) {
-            throw error;
+            logger.error (error)
         }
     };
 
@@ -63,7 +64,7 @@ export default class CartsDAO {
         try {
             return await cartModel.findByIdAndUpdate(cartId, cart, { new: true });
         } catch (error) {
-            throw error;
+            logger.error (error)
         }
     };
 
@@ -71,7 +72,7 @@ export default class CartsDAO {
         try {
             return cartModel.findByIdAndDelete(req.params.cid);
         } catch (error) {
-            throw error;
+            logger.error (error)
         }
     };
 
@@ -85,12 +86,12 @@ export default class CartsDAO {
 
                 await cart.save();
 
-                console.log("Producto fue removido exitosamente");
+                logger.info("Producto fue removido exitosamente");
             } else {
-                console.log("Este producto no esta en el carrito");
+                logger.warning("Este producto no esta en el carrito");
             }
         } catch (error) {
-            throw error;
+            logger.error (error)
         }
     };
 }

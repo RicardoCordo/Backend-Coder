@@ -34,7 +34,6 @@ const loginUser = async (req, res) => {
             cart: cartId,
         });
         req.session.user = user;
-        console.log(user); // mas que nada para ver el id del carrito
         return res.status(200).send({ status: 'success', message: "Usuario logeado" });
     } catch (err) {
         return res.status(500).json({ error: err.message });
