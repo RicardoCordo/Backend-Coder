@@ -8,6 +8,7 @@ import config from "./config.js";
 import cartsService from "../repositories/index.carts.js";
 
 const localStrategy = local.Strategy;
+
 const initializePassport = () => {
     passport.use('register', new localStrategy(
         { passReqToCallback: true, usernameField: "email" }, async (req, username, password, done) => {
@@ -73,6 +74,7 @@ const initializePassport = () => {
         }
     }
     ));
+    
     passport.use(
         "github",
         new GitHubStrategy(

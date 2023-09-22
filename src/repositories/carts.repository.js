@@ -1,6 +1,6 @@
 import CartDTO from "../DTOs/cart.dto.js";
 import CartsDAO from "../dao/mongo/DAO/carts.dao.mongo.js";
-import logger from "../utils/logger.js";
+import logger from "../utils/logger.utils.js";
 
 
 
@@ -23,6 +23,7 @@ class CartsRepository {
         try {
             logger.info("desde el repository");
             const cart = await this.dao.getCart(cid);
+            
             return new CartDTO(cart.products);
         } catch (error) {
             logger.error(error);

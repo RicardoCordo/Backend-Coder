@@ -6,7 +6,7 @@ import CartDTO from "../DTOs/cart.dto.js";
 import CustomError from "../errors/CustomError.js";
 import { addProductToCartErrorInfo } from "../errors/info.js";
 import EErrors from "../errors/enums.js";
-import logger from "../utils/logger.js";
+import logger from "../utils/logger.utils.js";
 
 
 
@@ -49,6 +49,13 @@ const productAddCartController = async (req, res) => {
 
         if (!cid) {
             return res.status(400).json({ error: 'El usuario no tiene un carrito asignado.' });
+        }
+
+        const user = req.session.user; 
+
+        const productBelongsToUser = await productModel.findOne({ _id: productId, owner: user._id });
+        if (productBelongsToUser && user.role === 'premium') {
+            return res.status(403).json({ error: 'Los usuarios premium no pueden agregar sus propios productos al carrito.' });
         }
 
         if (!productId || typeof quantity !== 'number' || quantity <= 0) {

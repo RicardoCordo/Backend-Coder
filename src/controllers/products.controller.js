@@ -27,7 +27,14 @@ const getProductIdController = async (req, res) => {
 
 const createProductController = async (req, res) => {
     try {
+        const user = req.session.user;
+        console.log(user);
         const { title, description, code, price, stock, category } = req.body;
+        let owner = user.email;
+        if (user.role !== 'premium') {
+            owner = 'admin'; 
+        }
+
         if (!title || !description || !code || !price || !stock || !category) {
             CustomError.createError({
                 name: "Error al crear producto",
@@ -36,7 +43,7 @@ const createProductController = async (req, res) => {
                 code: EErrors.INVALID_TYPES_ERROR,
             })
         }
-        const product = req.body;
+        const product = { ...req.body, owner };
         const createdProduct = await productsService.createProduct(product);
         res.status(200).json({ status: "success", data: createdProduct });
     } catch (err) {
@@ -46,31 +53,47 @@ const createProductController = async (req, res) => {
 
 const updateProductController = async (req, res) => {
     try {
-        const { title, description, code, price, stock, category } = req.body;
-        if (!title || !description || !code || !price || !stock || !category) {
-            CustomError.createError({
-                name: "Error al cambiar producto",
-                cause: updateProductErrorInfo({ title, description, code, price, stock, category }),
-                message: "Erroral intentar cambiar producto",
-                code: EErrors.INVALID_TYPES_ERROR,
-            })
-        };
-        
         const { id } = req.params;
         const newProduct = req.body;
-        await productsService.updateProduct(id, newProduct);
-        res.json({ status: "success", data: newProduct });
+        const product = await productsService.getProduct(id);
+
+        if (!product) {
+            return res.status(404).json({ error: 'Producto no encontrado' });
+        }
+
+        if (!newProduct.title || !newProduct.description || !newProduct.code || !newProduct.price || !newProduct.stock || !newProduct.category) {
+            CustomError.createError({
+                name: "Error al cambiar producto",
+                cause: updateProductErrorInfo(newProduct),
+                message: "Error al intentar cambiar producto",
+                code: EErrors.INVALID_TYPES_ERROR,
+            });
+        }
+
+        if (req.session.user.role === 'admin' || req.session.user.email === product.owner) {
+            await productsService.updateProduct(id, newProduct);
+            return res.status(200).json({ status: 'success', data: newProduct });
+        } else {
+            return res.status(403).json({ error: 'No tienes permiso para actualizar este producto' });
+        }
     } catch (err) {
         return res.status(500).json({ error: err.message });
-    };
-
+    }
 };
 
 const deleteProductController = async (req, res) => {
     try {
         const { id } = req.params;
-        await productsService.deleteProduct({ _id: id });
-        return res.status(200).json({ status: 'success', payload: result });
+        const product = await productsService.deleteProduct({ _id: id });
+        if (!product) {
+            return res.status(404).json({ error: 'Producto no encontrado' });
+        }
+        if (req.session.user.role === 'admin' || req.session.user.email === product.owner) {
+            await productsService.deleteProduct({ _id: id });
+            return res.status(200).json({ status: 'success', message: 'Producto eliminado con éxito' });
+        } else {
+            return res.status(403).json({ error: 'No tienes permiso para eliminar este producto' });
+        }
     } catch (err) {
         return res.status(500).json({ error: err.message });
     };

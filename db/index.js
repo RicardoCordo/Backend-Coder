@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import config from "../src/config/config.js";
-import logger from '../src/utils/logger.js';
+import logger from '../src/utils/logger.utils.js';
 const connectDB = async () => {
     try {
         await mongoose.connect(config.mongoUrl, {

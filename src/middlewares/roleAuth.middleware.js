@@ -1,6 +1,10 @@
+import logger from "../utils/logger.utils.js";
+
 function roleAuth(role) {
-    return (req, res, next) => {
+      return (req, res, next) => {
       try {
+        logger.info(req.session.user)
+        // me tira undefined nuevamente porque no me toma la session de mongo
         if (req.session.user) {
           const userRole = req.session.user.role;
           if (userRole === role) {

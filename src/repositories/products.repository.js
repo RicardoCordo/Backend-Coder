@@ -1,6 +1,6 @@
 import ProductDTO from "../DTOs/product.dto.js";
 import ProductsDAO from "../dao/mongo/DAO/products.dao.mongo.js";
-import logger from "../utils/logger.js";
+import logger from "../utils/logger.utils.js";
 
 
 class ProductsRepository {

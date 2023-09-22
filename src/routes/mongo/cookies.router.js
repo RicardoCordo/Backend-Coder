@@ -1,10 +1,8 @@
 import { Router } from "express";
-import cookieParser from "cookie-parser";
-import config from '../../config/config.js'
 import cookiesController from "../../controllers/cookies.controller.js";
 
 const router = Router();
-router.use(cookieParser(config.secretCode));
+
 
 router.get("/set", cookiesController.setCookieController);
 

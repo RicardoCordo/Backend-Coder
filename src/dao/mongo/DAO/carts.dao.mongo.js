@@ -1,4 +1,4 @@
-import logger from "../../../utils/logger.js";
+import logger from "../../../utils/logger.utils.js";
 import cartModel from "../models/cart.model.js";
 
 export default class CartsDAO {
@@ -15,6 +15,7 @@ export default class CartsDAO {
     async getCart(cid) {
         try {
             const cart = await cartModel.findById(cid).populate('products.productId');
+            console.log(cid);
             return cart;
         } catch (error) {
             logger.error (error);

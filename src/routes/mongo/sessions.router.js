@@ -3,6 +3,7 @@ import passport from "passport";
 import sessionsController from "../../controllers/sessions.controller.js";
 import auth from "../../middlewares/auth.middleware.js";
 
+
 const router = Router();
 
 router.post('/register', passport.authenticate("register", { failureRedirect: "/failureRedirect" }), async (req, res) => {
@@ -32,5 +33,9 @@ router.get("/githubcallback", passport.authenticate("github"), async (req, res) 
 router.get("/private", auth, sessionsController.adminUser);
 router.get("/logout", sessionsController.logoutUser);
 router.get("/current", auth, sessionsController.currentUser)
+router.post('/restore', sessionsController.restorePassword);
+router.post('/restoreCallback', sessionsController.restoreCallback);
+router.post('/premium/:uid', sessionsController.premiumUser);
+
 
 export default router

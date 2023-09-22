@@ -12,7 +12,7 @@ const router = Router();
 router.get("/", cartController.getCartsController);
 router.get("/:cid", cartController.getCartController);
 router.post("/", cartController.createCartController);
-router.post('/:cid/product/:productId', roleAuth('user'), cartController.productAddCartController);
+router.post('/:cid/product/:productId', roleAuth(['user', 'premium']), cartController.productAddCartController);
 router.put('/:cid', cartController.updateCartController);
 router.delete('/:cid', cartController.deleteCartController,);
 router.delete('/:cid/product/:productId', cartController.deleteProductCartController);

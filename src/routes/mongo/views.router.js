@@ -14,6 +14,7 @@ router.get("/products", viewsController.getProductsViewsController);
 router.get("/chat", viewsController.getChatViewsController);
 router.get("/realtimeproducts", viewsController.getRealtimeProductsController);
 router.get("/current", viewsController.getCurrentController);
+router.get('/restore', viewsController.getRestoreController);
 
 
 

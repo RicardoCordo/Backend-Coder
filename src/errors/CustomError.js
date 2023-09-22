@@ -1,4 +1,4 @@
-import logger from "../utils/logger.js";
+import logger from "../utils/logger.utils.js";
 
 export default class CustomError{
     static createError ({name ="Error", cause, message, code=1}){

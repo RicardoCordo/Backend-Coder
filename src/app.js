@@ -18,10 +18,12 @@ import router from './routes/mongo/index.js'
 import connectDB from '../db/index.js';
 import errorHanler from "./errors/index.js"
 import morgan from 'morgan';
-import logger from './utils/logger.js';
+import logger from './utils/logger.utils.js';
+import cookieParser from 'cookie-parser';
 
 
 const port = config.port
+const secretCode = config.secretCode
 const app = express();
 
 //const connection = await mongoose.connect(config.mongoUrl)
@@ -47,7 +49,7 @@ app.use(
 	app.use(express.urlencoded({ extended: true }));
 	app.use(morgan('dev'))
 	app.use(cors());
-	
+	app.use(cookieParser(secretCode));
 	inizializePassport();
 	app.use(passport.initialize());
 	app.use(passport.session());
