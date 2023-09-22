@@ -17,10 +17,10 @@ class ProductsRepository {
     }
   }
 
-  async getProduct() {
+  async getProduct(id) {
     try {
       logger.info("desde el repository");
-      return await this.dao.getProduct();
+      return await this.dao.getProduct(id);
     } catch (error) {
       logger.error (error);
     }
@@ -32,7 +32,6 @@ class ProductsRepository {
     try {
       logger.info("desde el repository");
       const newProductInfo = new ProductDTO(productInfo);
-
       return await this.dao.createProduct(newProductInfo);
     } catch (error) {
       logger.error (error);
@@ -49,10 +48,10 @@ class ProductsRepository {
       logger.error (error);
     }
   }
-  async deleteProduct() {
+  async deleteProduct(id) {
     try {
       logger.info("desde el repository");
-      return await this.dao.deleteProduct();
+      return await this.dao.deleteProduct(id);
     } catch (error) {
       logger.error (error);
     }

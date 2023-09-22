@@ -10,18 +10,18 @@ export default class ProductsDAO {
         }
     };
 
-    getProduct = (id) => {
+    getProduct = async (id) => {
         try {
-            return productModel.findById(id)
-        } catch (error) {
-            return res.status(500).json({ error: err.message });
+            return await productModel.findById(id);
+        } catch (err) {
+            return res.status(500).json({ error: error.message });
         }
     };
 
     createProduct = (product) => {
         try {
             return productModel.create(product)
-        } catch (error) {
+        } catch (err) {
             return res.status(500).json({ error: err.message });
         }
 
@@ -30,7 +30,7 @@ export default class ProductsDAO {
     updateProduct = (id, product) => {
         try {
             return productModel.findByIdAndUpdate(id, product)
-        } catch (error) {
+        } catch (err) {
             return res.status(500).json({ error: err.message });
         }
 

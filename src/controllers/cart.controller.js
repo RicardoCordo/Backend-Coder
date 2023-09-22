@@ -53,7 +53,7 @@ const productAddCartController = async (req, res) => {
 
         const user = req.session.user; 
 
-        const productBelongsToUser = await productModel.findOne({ _id: productId, owner: user._id });
+        const productBelongsToUser = await productModel.findOne({ _id: productId, owner: user.email });
         if (productBelongsToUser && user.role === 'premium') {
             return res.status(403).json({ error: 'Los usuarios premium no pueden agregar sus propios productos al carrito.' });
         }

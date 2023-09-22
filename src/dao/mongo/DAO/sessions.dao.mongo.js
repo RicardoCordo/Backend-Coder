@@ -2,6 +2,7 @@ import { createHash, isValidPassword } from "../../../utils.js";
 import { sendRestoreEmail } from "../../../utils/email.utils.js";
 import { faker } from '@faker-js/faker/locale/es';
 import userModel from "../models/user.model.js"
+import logger from "../../../utils/logger.utils.js";
 
 export class SessionsDAO {
 	constructor() { }
@@ -50,7 +51,8 @@ export class SessionsDAO {
 			if (!user) {
 				return res.status(404).json({ status: 'error', message: 'El usuario no existe' });
 			}
-			return await userModel.updateOne({ _id: uid }, { role: 'premium' });
+			logger.info(user);
+			return await userModel.updateOne({ _id: uid }, { role: 'premium' })
 		} catch (err) {
 			return res.status(500).json({ status: 'error', error: err.message });
 		}

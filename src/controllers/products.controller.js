@@ -1,8 +1,10 @@
 
+import config from "../config/config.js";
 import CustomError from "../errors/CustomError.js";
 import EErrors from "../errors/enums.js";
 import { generateProductErrorInfo, updateProductErrorInfo } from "../errors/info.js";
 import productsService from "../repositories/index.products.js"
+
 
 const getProductsController = async (req, res) => {
     try {
@@ -27,28 +29,28 @@ const getProductIdController = async (req, res) => {
 
 const createProductController = async (req, res) => {
     try {
+        const adminEmail = config.adminEmail;
         const user = req.session.user;
-        console.log(user);
         const { title, description, code, price, stock, category } = req.body;
         let owner = user.email;
         if (user.role !== 'premium') {
-            owner = 'admin'; 
+            owner = adminEmail;
         }
-
-        if (!title || !description || !code || !price || !stock || !category) {
+        if (!title || !description || !code || !price || !stock || !category || !owner) {
             CustomError.createError({
                 name: "Error al crear producto",
-                cause: generateProductErrorInfo({ title, description, code, price, stock, category }),
-                message: "Erroral intentar crear producto",
+                cause: generateProductErrorInfo({ title, description, code, price, stock, category, owner }),
+                message: "Error al intentar crear producto",
                 code: EErrors.INVALID_TYPES_ERROR,
-            })
+            });
         }
+
         const product = { ...req.body, owner };
         const createdProduct = await productsService.createProduct(product);
-        res.status(200).json({ status: "success", data: createdProduct });
+        res.status(200).json({ status: "success", data: (createdProduct)});
     } catch (err) {
         return res.status(500).json({ error: err.message });
-    };
+    }
 };
 
 const updateProductController = async (req, res) => {
@@ -84,19 +86,19 @@ const updateProductController = async (req, res) => {
 const deleteProductController = async (req, res) => {
     try {
         const { id } = req.params;
-        const product = await productsService.deleteProduct({ _id: id });
+        const product = await productsService.getProduct({ _id: id });
         if (!product) {
             return res.status(404).json({ error: 'Producto no encontrado' });
         }
         if (req.session.user.role === 'admin' || req.session.user.email === product.owner) {
-            await productsService.deleteProduct({ _id: id });
+            await productsService.deleteProduct(id); 
             return res.status(200).json({ status: 'success', message: 'Producto eliminado con éxito' });
         } else {
             return res.status(403).json({ error: 'No tienes permiso para eliminar este producto' });
         }
     } catch (err) {
         return res.status(500).json({ error: err.message });
-    };
+    }
 };
 
 

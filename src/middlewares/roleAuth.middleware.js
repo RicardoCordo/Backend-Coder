@@ -1,23 +1,23 @@
 import logger from "../utils/logger.utils.js";
 
-function roleAuth(role) {
-      return (req, res, next) => {
-      try {
-        logger.info(req.session.user)
-        // me tira undefined nuevamente porque no me toma la session de mongo
-        if (req.session.user) {
-          const userRole = req.session.user.role;
-          if (userRole === role) {
-            next(); 
-          } else {
-            res.status(403).json({ error: 'Acceso no autorizado' }); 
-          }
+function roleAuth(allowedRoles) {
+  return (req, res, next) => {
+    try {
+      const user = req.session.user;
+      if (user) {
+        const userRole = user.role;
+        if (allowedRoles.includes(userRole)) {
+          next();
         } else {
-          res.status(401).json({ message: 'No hay usuario actualmente autenticado' }); 
+          res.status(403).json({ error: 'Acceso no autorizado' });
         }
-      } catch (err) {
-        res.status(500).json({ error: err.message });
+      } else {
+        res.status(401).json({ message: 'No hay usuario actualmente autenticado' });
       }
-    };
-  }
-export default roleAuth
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  };
+}
+
+export default roleAuth;
