@@ -6,11 +6,6 @@ import cors from 'cors'
 
 import __dirname from "./utils.js";
 
-//import carts from './routes/filesystem/carts.router.js'
-//import views from './routes/filesystem/views.router.js';
-import { messageModel } from "./dao/mongo/models/messages.model.js"
-import { Server } from "socket.io";
-import products from "./data/products.json" assert { type: "json" };
 import MongoStore from 'connect-mongo';
 import session from 'express-session';
 import config from './config/config.js';
@@ -20,13 +15,27 @@ import errorHanler from "./errors/index.js"
 import morgan from 'morgan';
 import logger from './utils/logger.utils.js';
 import cookieParser from 'cookie-parser';
+import swaggerJSDoc from 'swagger-jsdoc';
+import swaggerUiExpress from 'swagger-ui-express';
+import socketSetup from './utils/socket.utils.js';
 
 
 const port = config.port
 const secretCode = config.secretCode
 const app = express();
 
-//const connection = await mongoose.connect(config.mongoUrl)
+const swaggerOptions = {
+	definition:{
+		openapi: '3.1.0',
+		info:{
+			title:'Curso Backend',
+			description: 'Aprendiendo Backend en Coder House'
+		},
+	},
+	apis: [`${__dirname}/docs/**/*.yaml`]
+}
+const specs = swaggerJSDoc(swaggerOptions);
+
 app.use(
 	session({
 		store: MongoStore.create({
@@ -53,7 +62,7 @@ app.use(
 	inizializePassport();
 	app.use(passport.initialize());
 	app.use(passport.session());
-	
+	app.use ("/docs", swaggerUiExpress.serve, swaggerUiExpress.setup(specs))
 	
 	
 	connectDB();
@@ -65,29 +74,5 @@ app.use(
 	const httpServer = app.listen(port, () => {
 		logger.info(`Corriendo en el puerto ${port}`);
 	});
+	socketSetup(httpServer);
 	
-	const io = new Server(httpServer);
-	const messages = [];
-	io.on("connection", (socket) => {
-		logger.info("Nuevo cliente conectado");
-		socket.emit("products", products);
-		io.emit("messageLogs", messages);
-		socket.on("user", data => {
-			messages.push(data);
-			io.emit("messagesLogs", messages);
-		});
-	socket.on("message", data => {
-		messages.push(data);
-		io.emit("messagesLogs", messages);
-		messageModel.create({
-			user: data.user,
-			message: data.message,
-		});
-	});
-
-
-	socket.on("disconnect", () => {
-		logger.info("Cliente desconectado");
-	});
-
-});
