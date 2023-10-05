@@ -35,10 +35,10 @@ const initializePassport = () => {
                     await user.save();
                     return done(null, user, { message: "Usuario creado" });
                 } catch (error) {
-                    return done("Error al crear el usuario" + error);
+                    return done("Error al crear el usuario: " + error.message);
                 }
             } catch (error) {
-                return done("Error al obtener el usuario" + error);
+                return done("Error al obtener el usuario" + error.message);
             }
 
         }

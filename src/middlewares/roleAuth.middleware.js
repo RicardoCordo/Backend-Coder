@@ -1,5 +1,3 @@
-import logger from "../utils/logger.utils.js";
-
 function roleAuth(allowedRoles) {
   return (req, res, next) => {
     try {

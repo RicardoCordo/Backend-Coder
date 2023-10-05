@@ -1,4 +1,5 @@
 import { ViewsDAO } from "../dao/mongo/DAO/views.dao.mongo.js";
+import logger from "../utils/logger.utils.js";
 
 
 
@@ -11,7 +12,7 @@ class ViewsRepository {
 		try {
 			return await this.dao.getRestoreDao(req, res);
 		} catch (error) {
-            console.log("error repository");
+            logger.info("error repository");
 		}
 	}
 

@@ -15,7 +15,6 @@ export default class CartsDAO {
     async getCart(cid) {
         try {
             const cart = await cartModel.findById(cid).populate('products.productId');
-            console.log(cid);
             return cart;
         } catch (error) {
             logger.error (error);

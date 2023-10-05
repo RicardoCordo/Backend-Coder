@@ -14,7 +14,7 @@ export default class ProductsDAO {
         try {
             return await productModel.findById(id);
         } catch (err) {
-            return res.status(500).json({ error: error.message });
+            return res.status(500).json({ error: err.message });
         }
     };
 

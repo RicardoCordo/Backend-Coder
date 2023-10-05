@@ -34,8 +34,8 @@ const getCartController = async (req, res) => {
 
 const createCartController = async (req, res) => {
     try {
-        const createdProduct = await cartsService.createCart(req.body);
-        res.status(201).json({ status: "success", data: createdProduct });
+        const createdCartId = await cartsService.createCart();
+        res.status(201).json({ status: "success", data: createdCartId });
     } catch (err) {
         return res.status(500).json({ error: err.message });
     };
@@ -184,7 +184,7 @@ const purchaseCartController = async (req, res) => {
         const cartDTO = new CartDTO(cart.products);
         return res.status(200).json({ message: 'Compra exitosa.', ticket, cart: cartDTO });
     } catch (error) {
-        console.error(error);
+        logger.error(error);
         return res.status(500).json({ message: 'Error interno del servidor.' });
     }
 };

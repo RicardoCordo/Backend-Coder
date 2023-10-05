@@ -47,7 +47,7 @@ const createProductController = async (req, res) => {
 
         const product = { ...req.body, owner };
         const createdProduct = await productsService.createProduct(product);
-        res.status(200).json({ status: "success", data: (createdProduct)});
+        res.status(200).json({ status: "success", data: createdProduct});
     } catch (err) {
         return res.status(500).json({ error: err.message });
     }

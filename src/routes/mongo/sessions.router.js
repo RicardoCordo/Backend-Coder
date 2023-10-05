@@ -2,6 +2,7 @@ import { Router } from "express"
 import passport from "passport";
 import sessionsController from "../../controllers/sessions.controller.js";
 import auth from "../../middlewares/auth.middleware.js";
+import roleAuth from "../../middlewares/roleAuth.middleware.js";
 
 
 const router = Router();
@@ -32,7 +33,7 @@ router.get("/githubcallback", passport.authenticate("github"), async (req, res) 
 
 router.get("/private", auth, sessionsController.adminUser);
 router.get("/logout", sessionsController.logoutUser);
-router.get("/current", auth, sessionsController.currentUser)
+router.get("/current", roleAuth('admin'), sessionsController.currentUser)
 router.post('/restore', sessionsController.restorePassword);
 router.post('/restoreCallback', sessionsController.restoreCallback);
 router.post('/premium/:uid', sessionsController.premiumUser);

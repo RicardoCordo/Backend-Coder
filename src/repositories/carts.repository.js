@@ -35,9 +35,9 @@ class CartsRepository {
         try {
             logger.info("desde el repository");
             const newCart = await this.dao.createCart();
-            return newCart._id;
+            return newCart;
         } catch (error) {
-            logger.error(error);
+            logger.error(error)
         }
     }
 

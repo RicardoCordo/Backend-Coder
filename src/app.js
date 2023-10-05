@@ -69,7 +69,7 @@ app.use(
 	router(app)
 	app.use(errorHanler)
 	
-	
+	export default app
 	
 	const httpServer = app.listen(port, () => {
 		logger.info(`Corriendo en el puerto ${port}`);

@@ -5,7 +5,9 @@
   "main": "app.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test:carts": "mocha src/test/Carts.test.js --timeout 10000 ",
+    "test:products": "mocha src/test/Products.test.js --timeout 10000",
+    "test:sessions": "mocha src/test/Sessions.test.js --timeout 10000 ",
     "start": "set NODE_ENV=development&& nodemon ./src/app.js",
     "start:production": "set NODE_ENV=production&& nodemon ./src/app.js"
   },
@@ -42,5 +44,10 @@
     "swagger-ui-express": "^5.0.0",
     "uuid": "^9.0.0",
     "winston": "^3.10.0"
+  },
+  "devDependencies": {
+    "chai": "^4.3.10",
+    "mocha": "^10.2.0",
+    "supertest": "^6.3.3"
   }
 }

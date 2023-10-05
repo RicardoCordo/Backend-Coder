@@ -1,3 +1,4 @@
+import logger from "../../../utils/logger.utils.js";
 
 
 export class ViewsDAO {
@@ -13,7 +14,7 @@ export class ViewsDAO {
             };
             return payload;
         } catch (error) {
-            console.log("error dao");;
+            logger.error(error);;
         }
     }
 }
