@@ -35,7 +35,7 @@ export default class CartsDAO {
             if (!cart) {
                 logger.warning('No se encontró un carrito con el ID especificado.');
             }
-            const existingProductIndex = cart.products.findIndex(product => product.productId.toString === productId);
+            const existingProductIndex = cart.products.findIndex(product => product.productId.toString() === productId);
 
             if (existingProductIndex !== -1) {
                 cart.products[existingProductIndex].quantity += quantity;
@@ -45,6 +45,7 @@ export default class CartsDAO {
             }
 
             await cart.save();
+            return cart;
         } catch (error) {
             logger.error (error)
         }

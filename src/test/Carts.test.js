@@ -35,12 +35,12 @@ describe("Carts Tester", () => {
         expect(createCartResponse.body.data).to.have.property("_id");
     });
 
-    // no puedo hacer andar este ultimo
+   
     it("El endpoint de tipo POST a /api/cart/:cid/product/:productId debe agregar un producto al carrito", async function () {
-        const cartId = "64f8987f35689bdf197e5b29";// id del carrito del usuario que se use para loguear abajo
-        const productId = "651f07eedd6ac8eea742774b";// id de un producto que traje de mongo 
+        const cartId = "64f8987f35689bdf197e5b29";
+        const productId = "651f07eedd6ac8eea742774b";
         const productToAdd = {
-            quantity: 2 
+            quantity: 1
         };
     
         const agent = supertest.agent(`http://localhost:${port}`);
@@ -49,11 +49,10 @@ describe("Carts Tester", () => {
             password: "123",
         });
         expect(loginResponse.status).to.equal(200);
-        const addProductResponse = await agent
-            .post(`/api/carts/${cartId}/product/${productId}`)
-            .send(productToAdd);
+        const addProductResponse = await agent.post(`/api/cart/${cartId}/product/${productId}`).send(productToAdd);
     
         expect(addProductResponse.status).to.equal(200);
+        expect(addProductResponse.body).to.have.property("status", "success");
         expect(addProductResponse.body).to.have.property("data");
     });
 });
