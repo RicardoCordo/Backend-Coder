@@ -84,40 +84,29 @@ const adminUser = (req, res) => {
     }
 
 };
-const restorePassword = async  (req, res) => {
+const restorePassword = async (req, res) => {
     try {
-		const payload = await sessionsService.getRestore(req, res);
-		if (typeof payload == 'string')
-			return res.status(404).json({ status: 'error', message: payload });
-		return res.redirect('/home');
-	} catch (err) {
-		return res.status(500).json({ status: 'error', error: err.message });
-	}
+        const payload = await sessionsService.getRestore(req, res);
+        if (typeof payload == 'string')
+            return res.status(404).json({ status: 'error', message: payload });
+        return res.redirect('/home');
+    } catch (err) {
+        return res.status(500).json({ status: 'error', error: err.message });
+    }
 };
 
 const restoreCallback = async (req, res) => {
-	try {
-		const payload = await sessionsService.getRestoreCallback(req, res);
-		if (typeof payload == 'string')
-			return res.status(404).json({ status: 'error', message: payload });
-		return res.redirect('/home');
-	} catch (err) {
-		return res.status(500).json({ status: 'error', error: err.message });
-	}
+    try {
+        const payload = await sessionsService.getRestoreCallback(req, res);
+        if (typeof payload == 'string')
+            return res.status(404).json({ status: 'error', message: payload });
+        return res.redirect('/home');
+    } catch (err) {
+        return res.status(500).json({ status: 'error', error: err.message });
+    }
 };
 
-const premiumUser = async (req, res) => {
-	try {
-		const payload = await sessionsService.getPremium(req, res);
-		if (typeof payload == 'string') {
-			return res.status(404).json({ status: 'error', message: payload });
-		} else {
-			return res.redirect('/home');
-		}
-	} catch (err) {
-		return res.status(500).json({ status: 'error', error: err.message });
-	}
-};
+
 
 
 export default {
@@ -127,6 +116,5 @@ export default {
     currentUser,
     adminUser,
     restorePassword,
-    restoreCallback,
-    premiumUser
+    restoreCallback
 };

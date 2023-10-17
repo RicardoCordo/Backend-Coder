@@ -1,4 +1,5 @@
-import logger from "../../../utils/logger.js";
+
+import logger from "../../../utils/logger.utils.js";
 import userModel from "../models/user.model.js";
 
 export default class UsersDAO {
@@ -12,9 +13,9 @@ export default class UsersDAO {
         }
     };
 
-    getUserById = (id) => {
+    getUserById = (uid) => {
         try {
-            return userModel.findById(id);
+            return userModel.findById(uid);
         } catch (error) {
             logger.error (error);
         }
@@ -28,19 +29,37 @@ export default class UsersDAO {
         }
     };
 
-    updateUser = (id, user) => {
+    updateUser = (uid, userDocuments, documentType) => {
         try {
-            return userModel.findByIdAndUpdate(id, user);
+            const update = {};
+            update['documents'] = userDocuments;
+            return userModel.findByIdAndUpdate(
+                uid,
+                { $push: update },
+                { new: true }
+            );
         } catch (error) {
-            logger.error (error);
+            logger.error(error);
         }
     };
 
-    deleteUser = (id) => {
+    deleteUser = (uid) => {
         try {
-            return userModel.findByIdAndDelete(id);
+            return userModel.findByIdAndDelete(uid);
         } catch (error) {
             logger.error (error);
         }
     };
+    async getPremiumDao(req, res) {
+		try {
+			const { uid } = req.params;
+			const user = userModel.findById(uid);
+			if (!user) {
+				return res.status(404).json({ status: 'error', message: 'El usuario no existe' });
+			}
+			return await userModel.updateOne({ _id: uid }, { role: 'premium' })
+		} catch (error) {
+			logger.error (error);
+		}
+	}
 }

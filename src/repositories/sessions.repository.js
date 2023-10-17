@@ -21,13 +21,6 @@ class sessionsRepository {
             return res.status(500).json({ status: 'error', error: err.message });
 		}
 	}
-	async getPremium(req, res) {
-		try {
-			return await this.dao.getPremiumDao(req, res);
-		} catch (err) {
-			return res.status(500).json({ status: 'error', error: err.message });
-		}
-	}
 
   }
   

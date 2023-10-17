@@ -36,7 +36,7 @@ router.get("/logout", sessionsController.logoutUser);
 router.get("/current", roleAuth('admin'), sessionsController.currentUser)
 router.post('/restore', sessionsController.restorePassword);
 router.post('/restoreCallback', sessionsController.restoreCallback);
-router.post('/premium/:uid', sessionsController.premiumUser);
+
 
 
 export default router
