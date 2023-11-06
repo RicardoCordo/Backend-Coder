@@ -7,6 +7,8 @@ import CustomError from "../errors/CustomError.js";
 import { addProductToCartErrorInfo } from "../errors/info.js";
 import EErrors from "../errors/enums.js";
 import logger from "../utils/logger.utils.js";
+import Swal from "sweetalert2";
+import { sendTicketEmail } from "../utils/email.utils.js";
 
 
 
@@ -51,7 +53,7 @@ const productAddCartController = async (req, res) => {
             return res.status(400).json({ error: 'El usuario no tiene un carrito asignado.' });
         }
 
-        const user = req.session.user; 
+        const user = req.session.user;
 
         const productBelongsToUser = await productModel.findOne({ _id: productId, owner: user.email });
         if (productBelongsToUser && user.role === 'premium') {
@@ -68,7 +70,7 @@ const productAddCartController = async (req, res) => {
         }
 
         const cart = await cartsService.addToCart(cid, productId, quantity);
-        return res.status(200).json({ status: "success", data: cart });
+        return res.status(200).redirect('/cart');
     } catch (err) {
         return res.status(500).json({ error: err.message });
     }
@@ -177,14 +179,20 @@ const purchaseCartController = async (req, res) => {
             purchaser: user.email,
         });
         await ticket.save();
+        const ticketEmail = user.email
+        try {
+            await sendTicketEmail(ticketEmail, ticket);
+            logger.info('Correo electrónico con el ticket enviado exitosamente.');
+        } catch (error) {
+            logger.error('Error al enviar el correo electrónico con el ticket:', error);
+        }
 
         cart.products = [];
         await cartsService.updateCart(cartId, cart);
 
-        const cartDTO = new CartDTO(cart.products);
-        return res.status(200).json({ message: 'Compra exitosa.', ticket, cart: cartDTO });
+        return res.status(200).redirect('/cart')
     } catch (error) {
-        logger.error(error);
+        console.error(error);
         return res.status(500).json({ message: 'Error interno del servidor.' });
     }
 };

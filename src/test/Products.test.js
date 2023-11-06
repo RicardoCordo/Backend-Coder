@@ -1,7 +1,7 @@
 import chai from "chai";
 import supertest from "supertest";
 import config from "../config/config.js";
-import productModel from "../dao/mongo/models/product.model.js";
+
 
 const expect = chai.expect;
 const port = config.port;

@@ -27,6 +27,10 @@ const loginUser = async (req, res) => {
         if (!req.user) return res.status(400).send({ status: "failed", message: "Usuario o contraseña incorrectos" });
 
         const cartId = req.user.cart || undefined;
+
+        req.user.last_connection = new Date();       
+        await req.user.save();
+
         const user = new UserDTO({
             first_name: req.user.first_name,
             last_name: req.user.last_name,

@@ -1,0 +1,25 @@
+<div>
+  <h1>Panel de Administración</h1>
+  <h2>Lista de usuarios en base de datos</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Correo Electrónico</th>
+        <th>Rol</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    {{#each users}}
+    <tr>
+      <td>{{this.email}}</td>
+      <td>{{this.role}}</td>
+      <td>
+        <button class="delete-user-button" data-uid="{{this._id}}">Eliminar Usuario</button>
+         <button class="modify-role-button" data-uid="{{this._id}}">Modificar Rol</button>
+      </td>
+    </tr>
+    {{/each}}
+  </table>
+</div>
+
+<script src="/js/admin.js"></script>

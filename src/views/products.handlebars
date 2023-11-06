@@ -3,15 +3,16 @@
   {{#if user}}
   <p>Nombre: {{user.first_name}} {{user.last_name}}</p>
   <p>Correo: {{user.email}}</p>
-  
   {{/if}}
+
+
   {{#each products}}
-  <p>Poducto: {{this.title}}</p>
-  <p>Descripcion del producto: {{this.description}}</p>
+  <p>Producto: {{this.title}}</p>
+  <p>Descripción del producto: {{this.description}}</p>
   <p>Precio: ${{this.price}}</p>
   <p>Stock: {{this.stock}} unidades</p>
-    <form id="addToCartForm_{{_id}}" method="POST" action="/api/cart/64f7a414b216410cf7c3dedf/product/{{_id}}">
-    {{!-- no me renderiza {{user.cart}} por eso inclui manualmente el carrito --}}
+
+  <form id="addToCartForm_{{_id}}" method="POST" action="/api/cart/{{../user.cart}}/product/{{_id}}">
     <label for="quantity_{{_id}}">Cantidad:</label>
     <input type="number" name="quantity" id="quantity_{{_id}}" value="1" min="1">
     <button type="submit">Agregar al carrito</button>
@@ -19,6 +20,8 @@
 
   <br />
   {{/each}}
+
+
   {{#if hasPrevPage}}
   <a href="/products?page={{prevPage}}"><button>Anterior</button></a>
   {{/if}}
@@ -29,10 +32,6 @@
   <a href="/products?page={{nextPage}}"><button>Siguiente</button></a>
   {{/if}}
 
-  <a href="/api/cart/64f7a414b216410cf7c3dedf"><button>Ir al carrito</button></a>
+  <a href="/cart"><button>Ir al carrito</button></a>
   <a href="/home"><button>Ir al Home</button></a>
-  <form method="POST" action="/api/cart/64f7a414b216410cf7c3dedf/purchase">
-  {{!-- no me renderiza {{user.cart}} por eso inclui manualmente el carrito --}}
-    <button type="submit">Comprar</button>
-</form>
 </div>

@@ -1,11 +1,24 @@
-{{#each carts}}
-<div>
-    <p>Cart Id: {{_id}}</p>
-    {{#each products}}
-    <p>Producto: {{title}}</p>
-    <p>Id del Producto: {{productId}}</p>
-    <p>quantity: {{quantity}}</p>
-        {{/each}}
-</div>
-{{/each}}
-<a href="/home"> <button>Ir al Home</button></a>
+<h1>Carrito de Compras</h1>
+
+{{#if data.cart}}
+  <div>
+    <p>Carrito ID: {{data.cart._id}}</p>
+    <p>Productos:</p>
+    <ul>
+      {{#each data.cart.products}}
+        <li>
+          <p>ID del Producto: {{this._id}}</p>
+          <p>Nombre del Producto: {{this.title}}</p>
+          <p>Cantidad: {{this.quantity}}</p>
+        </li>
+      {{/each}}
+    </ul>
+  </div>
+{{else}}
+  <p>No se encontró un carrito.</p>
+{{/if}}
+
+<form method="POST" action="/api/cart/{{data.user.cart}}/purchase">
+  <button type="submit">Comprar</button>
+</form>
+<a href="/products"><button>Volver a Productos</button></a></li>

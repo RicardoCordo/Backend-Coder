@@ -24,7 +24,7 @@ describe("Sessions Tester", function () {
             .send(newUser);
 
         expect(response.status).to.equal(200);
-        // Deje solo status porque al haber un redirect en el controller no sabia por donde encararlo 
+
     });
 
     it("El endpoint de tipo POST a /api/sessions/login debe iniciar sesión para un usuario registrado", async function () {

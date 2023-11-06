@@ -2,25 +2,25 @@
   <h1>BIENVENIDO</h1>
   <h2>{{user.role}}:{{user.first_name}} {{user.last_name}}</h2>
   <p>Correo: {{user.email}}</p>
-   <form action="/api/sessions/logout" method="get"> 
+  <form action="/api/sessions/logout" method="get">
     <button type="submit">Cerrar sesión</button>
   </form>
 </div>
 
 
 
-<div >
-	<h3>Ir a:</h3>
+<div>
+  <h3>Ir a:</h3>
 
-	<ul >
-		<li > <a href="/products"><button>Productos</button></a></li>
-		<li > <a href="/api/cart"><button>Ir al carrito</button></a></li>
-		<li > <a href="/realTimeProducts"><button>Productos en tiempo real</button></li>
-    <li > <a href="/current"><button>Ir a información del usuario logueado</button></li>
-
+  <ul>
+    <li> <a href="/products"><button>Productos</button></a></li>
+    <li> <a href="/cart"><button>Ir al carrito</button></a></li>
+    <li> <a href="/realTimeProducts"><button>Productos en tiempo real</button></li>
+    <li> <a href="/current"><button>Ir a información del usuario logueado</button></li>
+    <li> <a href="/admin"><button>Panel de Administración</button></li>
     <form method="POST" action="/api/sessions/restore">
-    <button type="submit">Regenerar contraseña</button>
-</form>
-  
-	</ul>
+      <button type="submit">Regenerar contraseña</button>
+    </form>
+
+  </ul>
 </div>
