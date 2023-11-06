@@ -22,6 +22,9 @@
     "url": "https://github.com/RicardoCordo/Entregable1/issues"
   },
   "homepage": "https://github.com/RicardoCordo/Entregable1#readme",
+  "engines": {
+    "node": "18.12.1"
+  },
   "dependencies": {
     "@faker-js/faker": "^8.0.2",
     "bcrypt": "^5.1.0",
