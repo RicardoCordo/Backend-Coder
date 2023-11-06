@@ -48,8 +48,6 @@ app.use(
 		saveUninitialized: true,
 	})
 );
-
-
 app.use(passport.initialize());
 app.use(passport.session());
 app.engine("handlebars", handlebars.engine());
@@ -62,7 +60,6 @@ app.use(cookieParser(secretCode));
 app.use(morgan('dev'))
 app.use(cors());
 app.use("/docs", swaggerUiExpress.serve, swaggerUiExpress.setup(specs))
-
 
 connectDB();
 router(app)

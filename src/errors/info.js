@@ -18,7 +18,7 @@ export const updateProductErrorInfo = (products) => {
     * category: tiene que ser String, recibido ${products.category}`;
 }
 
-export const addProductToCartErrorInfo = (product)=> {
+export const addProductToCartErrorInfo = (product) => {
     return `Una o más propiedades están incompletas o no son válidas. Lista de propiedades requeridas:
     * ProductId: tiene que existir, recibido ${product.productId}
     * Quantity: tiene que ser de tipo numerico y mayor que 0, recibido ${product.quantity}`;

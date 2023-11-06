@@ -10,7 +10,7 @@ router.get('/', (req, res) => {
   logger.info('Info');
   logger.http('Http');
   logger.debug('Debug');
-  return res.status(200).json({ status: 'success', message: 'Logs printed'})
+  return res.status(200).json({ status: 'success', message: 'Logs printed' })
 });
 
 export default router;

@@ -28,7 +28,7 @@ describe("Products Tester", () => {
     });
 
     it("El endpoint de tipo POST a /api/products debe crear un producto si el usuario es un admin", async function () {
-       
+
 
         const agent = supertest.agent(`http://localhost:${port}`);
         const loginResponse = await agent.post("/api/sessions/login").send({

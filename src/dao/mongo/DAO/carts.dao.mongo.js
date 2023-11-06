@@ -8,7 +8,7 @@ export default class CartsDAO {
             return cartModel.find().populate('products.productId').lean();
 
         } catch (error) {
-            logger.error (error);
+            logger.error(error);
         }
     };
 
@@ -17,17 +17,19 @@ export default class CartsDAO {
             const cart = await cartModel.findById(cid).populate('products.productId');
             return cart;
         } catch (error) {
-            logger.error (error);
+            logger.error(error);
         }
     }
+
     async createCart() {
         try {
             const createdCart = await cartModel.create({ products: [] });
             return createdCart;
         } catch (error) {
-            logger.error (error);
+            logger.error(error);
         }
     }
+
     async addToCart(cid, productId, quantity = 1) {
 
         try {
@@ -47,7 +49,7 @@ export default class CartsDAO {
             await cart.save();
             return cart;
         } catch (error) {
-            logger.error (error)
+            logger.error(error)
         }
 
     };
@@ -57,7 +59,7 @@ export default class CartsDAO {
             const cart = await cartModel.findOne({ user: userId }).populate('products.productId').lean();
             return cart;
         } catch (error) {
-            logger.error (error)
+            logger.error(error)
         }
     };
 
@@ -65,7 +67,7 @@ export default class CartsDAO {
         try {
             return await cartModel.findByIdAndUpdate(cartId, cart, { new: true });
         } catch (error) {
-            logger.error (error)
+            logger.error(error)
         }
     };
 
@@ -73,7 +75,7 @@ export default class CartsDAO {
         try {
             return cartModel.findByIdAndDelete(req.params.cid);
         } catch (error) {
-            logger.error (error)
+            logger.error(error)
         }
     };
 
@@ -92,7 +94,7 @@ export default class CartsDAO {
                 logger.warning("Este producto no esta en el carrito");
             }
         } catch (error) {
-            logger.error (error)
+            logger.error(error)
         }
     };
 }

@@ -10,7 +10,6 @@ import logger from "../utils/logger.utils.js";
 import { sendTicketEmail } from "../utils/email.utils.js";
 
 
-
 const getCartsController = async (req, res) => {
     try {
         const carts = await cartsService.getCarts(req, res, req.query);
@@ -30,8 +29,6 @@ const getCartController = async (req, res) => {
         return res.status(500).json({ error: err.message });
     };
 }
-
-
 
 const createCartController = async (req, res) => {
     try {
@@ -74,6 +71,7 @@ const productAddCartController = async (req, res) => {
         return res.status(500).json({ error: err.message });
     }
 }
+
 const updateCartController = async (req, res) => {
     try {
         const cid = req.params.cid;
@@ -84,7 +82,6 @@ const updateCartController = async (req, res) => {
     };
 
 }
-
 
 const deleteCartController = async (req, res) => {
     try {
@@ -130,6 +127,7 @@ const calculateTotalAmount = async (cart) => {
 
     return totalAmount;
 };
+
 const purchaseCartController = async (req, res) => {
     try {
         const cartId = req.params.cid;
@@ -195,7 +193,6 @@ const purchaseCartController = async (req, res) => {
         return res.status(500).json({ message: 'Error interno del servidor.' });
     }
 };
-
 
 
 export default {

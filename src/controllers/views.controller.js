@@ -17,7 +17,6 @@ const loginController = async (req, res) => {
     }
 };
 
-
 const registerController = async (req, res) => {
     try {
 
@@ -32,8 +31,6 @@ const registerController = async (req, res) => {
         return await res.status(500).json({ status: 'error', error: err.message });
     }
 };
-
-
 
 const getHomeController = async (req, res) => {
     try {
@@ -72,8 +69,6 @@ const getProductsViewsController = async (req, res) => {
     }
 };
 
-
-
 const getChatViewsController = async (req, res) => {
     try {
         return res.status(200).render('chat', {
@@ -105,11 +100,11 @@ const getCartViewsController = async (req, res) => {
 
         const payload = {
             user: user,
-            cart: transformedCartData,  
+            cart: transformedCartData,
             documentTitle: 'cart',
         };
 
-        res.render('cart', { data: payload }); 
+        res.render('cart', { data: payload });
     } catch (error) {
         return res.status(500).json({ error: error.message });
     }
@@ -153,6 +148,7 @@ const getRestoreController = async (req, res) => {
         return res.status(500).json({ status: 'error', error: err.message });
     }
 };
+
 const getAdminView = async (req, res) => {
     try {
         const users = await usersService.getAllUsers();

@@ -1,19 +1,22 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>{{ documentTitle }}</title>
 </head>
+
 <body>
     {{#if user}}
-        <h1>Información del Usuario Actual</h1>
-        <p>Nombre: {{ user.first_name }} {{ user.last_name }}</p>
-        <p>Email: {{ user.email }}</p>
-        <p>Edad: {{ user.age }}</p>
-        <p>Rol: {{ user.role }}</p>
-        <a href="/home"><button>Volver al Inicio</button></a>
+    <h1>Información del Usuario Actual</h1>
+    <p>Nombre: {{ user.first_name }} {{ user.last_name }}</p>
+    <p>Email: {{ user.email }}</p>
+    <p>Edad: {{ user.age }}</p>
+    <p>Rol: {{ user.role }}</p>
+    <a href="/home"><button>Volver al Inicio</button></a>
     {{else}}
-        <p>No hay usuario actualmente autenticado.</p>
-        <a href="/"><button>Iniciar Sesión</button></a>
+    <p>No hay usuario actualmente autenticado.</p>
+    <a href="/"><button>Iniciar Sesión</button></a>
     {{/if}}
 </body>
+
 </html>

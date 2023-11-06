@@ -41,6 +41,7 @@ const premiumUser = async (req, res) => {
 		return res.status(500).json({ status: 'error', error: err.message });
 	}
 };
+
 const UploadDocument = async (req, res) => {
 	try {
 		const { uid } = req.params;
@@ -108,28 +109,29 @@ const deleteInactiveUsers = async (req, res) => {
 		res.status(500).json({ status: 'error', error: 'Error al limpiar usuarios inactivos' });
 	}
 };
+
 const roleChange = async (req, res) => {
 	try {
-	  const { uid } = req.params;
-	  const { newRole } = req.body;
-	  console.log(uid);
+		const { uid } = req.params;
+		const { newRole } = req.body;
+		console.log(uid);
 
-  	  const user = await usersService.getUserById(uid);
-  	  if (!user) {
-		return res.status(404).json({ status: 'error', message: 'El usuario no existe' });
-	  }
-  
-	  if (newRole !== 'user' && newRole !== 'premium') {
-		return res.status(400).json({ status: 'error', message: 'El nuevo rol no es válido' });
-	  }
-  
-	  await usersService.updateUserRole(uid, newRole);
- 
-	  res.status(200).json({ status: 'success', message: 'Rol de usuario actualizado con éxito' });
+		const user = await usersService.getUserById(uid);
+		if (!user) {
+			return res.status(404).json({ status: 'error', message: 'El usuario no existe' });
+		}
+
+		if (newRole !== 'user' && newRole !== 'premium') {
+			return res.status(400).json({ status: 'error', message: 'El nuevo rol no es válido' });
+		}
+
+		await usersService.updateUserRole(uid, newRole);
+
+		res.status(200).json({ status: 'success', message: 'Rol de usuario actualizado con éxito' });
 	} catch (err) {
-	  res.status(500).json({ status: 'error', error: err.message });
+		res.status(500).json({ status: 'error', error: err.message });
 	}
-  };
+};
 
 export default {
 	getAllUsers,

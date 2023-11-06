@@ -1,21 +1,21 @@
 <h1>Carrito de Compras</h1>
 
 {{#if data.cart}}
-  <div>
-    <p>Carrito ID: {{data.cart._id}}</p>
-    <p>Productos:</p>
-    <ul>
-      {{#each data.cart.products}}
-        <li>
-          <p>ID del Producto: {{this._id}}</p>
-          <p>Nombre del Producto: {{this.title}}</p>
-          <p>Cantidad: {{this.quantity}}</p>
-        </li>
-      {{/each}}
-    </ul>
-  </div>
+<div>
+  <p>Carrito ID: {{data.cart._id}}</p>
+  <p>Productos:</p>
+  <ul>
+    {{#each data.cart.products}}
+    <li>
+      <p>ID del Producto: {{this._id}}</p>
+      <p>Nombre del Producto: {{this.title}}</p>
+      <p>Cantidad: {{this.quantity}}</p>
+    </li>
+    {{/each}}
+  </ul>
+</div>
 {{else}}
-  <p>No se encontró un carrito.</p>
+<p>No se encontró un carrito.</p>
 {{/if}}
 
 <form method="POST" action="/api/cart/{{data.user.cart}}/purchase">

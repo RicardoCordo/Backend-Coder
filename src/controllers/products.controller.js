@@ -16,6 +16,7 @@ const getProductsController = async (req, res) => {
         return res.status(500).json({ error: err.message });
     }
 };
+
 const getProductIdController = async (req, res) => {
     try {
         const { id } = req.params;
@@ -98,10 +99,10 @@ const deleteProductController = async (req, res) => {
             if (isPremiumUser) {
                 const deleteProductEmail = user.email;
                 await sendProductDeletedEmail(deleteProductEmail);
-               
+
             }
-            
-            
+
+
             return res.status(200).json({ status: 'success', message: 'Producto eliminado con éxito' });
         } else {
             return res.status(403).json({ error: 'No tienes permiso para eliminar este producto' });
@@ -110,7 +111,6 @@ const deleteProductController = async (req, res) => {
         return res.status(500).json({ error: err.message });
     }
 };
-
 
 export default {
     createProductController,

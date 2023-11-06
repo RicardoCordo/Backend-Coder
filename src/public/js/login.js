@@ -16,5 +16,5 @@ form.addEventListener('submit', async (event) => {
     if (responseData.status === 'success') {
         window.location.replace('/home');
     }
-       
+
 });

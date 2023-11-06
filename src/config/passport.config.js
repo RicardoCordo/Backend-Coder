@@ -74,7 +74,7 @@ const initializePassport = () => {
         }
     }
     ));
-    
+
     passport.use(
         "github",
         new GitHubStrategy(
@@ -119,6 +119,5 @@ const initializePassport = () => {
         done(null, user);
     });
 };
-
 
 export default initializePassport

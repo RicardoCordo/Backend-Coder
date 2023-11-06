@@ -23,13 +23,12 @@ class CartsRepository {
         try {
             logger.info("desde el repository");
             const cart = await this.dao.getCart(cid);
-            
+
             return new CartDTO(cart.products);
         } catch (error) {
             logger.error(error);
         }
     }
-
 
     async createCart() {
         try {
@@ -40,7 +39,6 @@ class CartsRepository {
             logger.error(error)
         }
     }
-
 
     async addToCart(cid, productId, quantity) {
         try {
@@ -59,6 +57,7 @@ class CartsRepository {
             logger.error(error);
         }
     }
+
     async deleteCart() {
         try {
             logger.info("desde el repository");
@@ -67,7 +66,6 @@ class CartsRepository {
             logger.error(error);
         }
     }
-
 
     async removeFromCart() {
         try {

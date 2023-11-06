@@ -14,8 +14,6 @@ class usersRepository {
 		}
 	}
 
-
-
 	async getUserById(req, res) {
 		try {
 			return await this.dao.getUserById(req, res);
@@ -31,6 +29,7 @@ class usersRepository {
 			return res.status(500).json({ status: 'error', error: err.message });
 		}
 	}
+
 	async UploadDocument(uid, userDocuments, documentType) {
 		try {
 			return await this.dao.updateUser(uid, userDocuments, documentType);
@@ -54,7 +53,6 @@ class usersRepository {
 			return { status: 'error', error: error.message };
 		}
 	}
-
 
 	async updateUserRole(uid, newRole) {
 		try {

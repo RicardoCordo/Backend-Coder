@@ -22,13 +22,14 @@ const registerUser = async (req, res) => {
         return res.status(500).json({ error: err.message });
     }
 };
+
 const loginUser = async (req, res) => {
     try {
         if (!req.user) return res.status(400).send({ status: "failed", message: "Usuario o contraseña incorrectos" });
 
         const cartId = req.user.cart || undefined;
 
-        req.user.last_connection = new Date();       
+        req.user.last_connection = new Date();
         await req.user.save();
 
         const user = new UserDTO({
@@ -45,6 +46,7 @@ const loginUser = async (req, res) => {
         return res.status(500).json({ error: err.message });
     }
 };
+
 const logoutUser = (req, res) => {
     try {
         req.session.destroy((err) => {
@@ -88,6 +90,7 @@ const adminUser = (req, res) => {
     }
 
 };
+
 const restorePassword = async (req, res) => {
     try {
         const payload = await sessionsService.getRestore(req, res);
@@ -109,8 +112,6 @@ const restoreCallback = async (req, res) => {
         return res.status(500).json({ status: 'error', error: err.message });
     }
 };
-
-
 
 
 export default {

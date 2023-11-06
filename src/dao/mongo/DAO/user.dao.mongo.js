@@ -50,6 +50,7 @@ export default class UsersDAO {
             logger.error(error);
         }
     };
+
     async getPremiumDao(req, res) {
         try {
             const { uid } = req.params;
@@ -62,6 +63,7 @@ export default class UsersDAO {
             logger.error(error);
         }
     };
+    
     async deleteInactiveUsers(twoDaysAgo) {
         try {
             return await userModel.deleteMany({ last_connection: { $lt: twoDaysAgo } });

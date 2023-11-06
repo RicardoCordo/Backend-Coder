@@ -24,7 +24,6 @@ class ViewsRepository {
 		}
 	}
 
-
 	async getCart(req, res) {
 		try {
 			return await this.dao.getCartDao(req, res);
@@ -32,8 +31,6 @@ class ViewsRepository {
 			return res.status(500).json({ error: err.message });
 		}
 	}
-
-
 
 	async getRestore(req, res) {
 		try {

@@ -26,7 +26,7 @@ describe("Carts Tester", () => {
 
     it("El endpoint de tipo POST a /api/cart debe crear un carrito", async function () {
         const newCart = {
-            products: [] 
+            products: []
         };
 
         const createCartResponse = await requester.post("/api/cart").send(newCart);
@@ -35,14 +35,14 @@ describe("Carts Tester", () => {
         expect(createCartResponse.body.data).to.have.property("_id");
     });
 
-   
+
     it("El endpoint de tipo POST a /api/cart/:cid/product/:productId debe agregar un producto al carrito", async function () {
         const cartId = "64f8987f35689bdf197e5b29";
         const productId = "651f07eedd6ac8eea742774b";
         const productToAdd = {
             quantity: 1
         };
-    
+
         const agent = supertest.agent(`http://localhost:${port}`);
         const loginResponse = await agent.post("/api/sessions/login").send({
             email: "rickycordo93@gmail.com",
@@ -50,7 +50,7 @@ describe("Carts Tester", () => {
         });
         expect(loginResponse.status).to.equal(200);
         const addProductResponse = await agent.post(`/api/cart/${cartId}/product/${productId}`).send(productToAdd);
-    
+
         expect(addProductResponse.status).to.equal(200);
         expect(addProductResponse.body).to.have.property("status", "success");
         expect(addProductResponse.body).to.have.property("data");

@@ -1,33 +1,30 @@
 import logger from "../../../utils/logger.utils.js";
 import cartModel from "../models/cart.model.js";
 
-
-
 export class ViewsDAO {
     constructor() { }
 
-
     async getLoginDao() {
-		try {
-			const payload = {
-				documentTitle: 'login',
-			};
-			return payload;
-		} catch (error) {
+        try {
+            const payload = {
+                documentTitle: 'login',
+            };
+            return payload;
+        } catch (error) {
             logger.error(error);
-		}
-	}
+        }
+    }
 
     async getRegisterDao() {
-		try {
-			const payload = {
-				documentTitle: 'register',
-			};
-			return payload;
-		} catch (error) {
-			logger.error(error);
-		}
-	}
+        try {
+            const payload = {
+                documentTitle: 'register',
+            };
+            return payload;
+        } catch (error) {
+            logger.error(error);
+        }
+    }
 
     async getCartDao(cid) {
         try {

@@ -13,7 +13,7 @@ class ProductsRepository {
       logger.info("desde el repository");
       return await this.dao.getProducts();
     } catch (error) {
-      logger.error (error);
+      logger.error(error);
     }
   }
 
@@ -22,11 +22,9 @@ class ProductsRepository {
       logger.info("desde el repository");
       return await this.dao.getProduct(id);
     } catch (error) {
-      logger.error (error);
+      logger.error(error);
     }
   }
-
- 
 
   async createProduct(productInfo) {
     try {
@@ -34,7 +32,7 @@ class ProductsRepository {
       const newProductInfo = new ProductDTO(productInfo);
       return await this.dao.createProduct(newProductInfo);
     } catch (error) {
-      logger.error (error);
+      logger.error(error);
     }
   }
 
@@ -42,18 +40,19 @@ class ProductsRepository {
     try {
       logger.info("desde el repository");
       const newProductInfo = new ProductDTO(productInfo);
-  
+
       return await this.dao.updateProduct(newProductInfo);
     } catch (error) {
-      logger.error (error);
+      logger.error(error);
     }
   }
+  
   async deleteProduct(id) {
     try {
       logger.info("desde el repository");
       return await this.dao.deleteProduct(id);
     } catch (error) {
-      logger.error (error);
+      logger.error(error);
     }
   }
 }

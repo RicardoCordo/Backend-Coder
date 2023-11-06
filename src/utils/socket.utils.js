@@ -10,12 +10,12 @@ async function socketSetup(httpServer) {
   io.on("connection", async (socket) => {
     logger.info("Nuevo cliente conectado");
 
-	try {
-		const products = await getProductsController();
-		socket.emit("products", products);
-	  } catch (error) {
-		logger.error("Error al obtener productos:", error);
-	  }
+    try {
+      const products = await getProductsController();
+      socket.emit("products", products);
+    } catch (error) {
+      logger.error("Error al obtener productos:", error);
+    }
 
     io.emit("messageLogs", messages);
 

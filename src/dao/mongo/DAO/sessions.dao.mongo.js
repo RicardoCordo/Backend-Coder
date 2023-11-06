@@ -12,13 +12,13 @@ export class SessionsDAO {
 			const { user } = req.session;
 			const restoreEmail = user.email;
 			if (!restoreEmail) {
-			  return `Este email no existe`;
+				return `Este email no existe`;
 			}
 			const restoreCookie = req.signedCookies.restoreCookie;
 			if (!restoreCookie) {
-			  return res.redirect('/home');
+				return res.redirect('/home');
 			}
-		
+
 			const cookieId = faker.database.mongodbObjectId();
 			res.cookie('restoreCookie', cookieId, {
 				signed: true,
@@ -43,7 +43,5 @@ export class SessionsDAO {
 			return res.status(500).json({ status: 'error', error: err.message });
 		}
 	}
-
-
 
 };
