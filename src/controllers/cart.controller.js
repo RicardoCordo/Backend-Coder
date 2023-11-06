@@ -7,7 +7,6 @@ import CustomError from "../errors/CustomError.js";
 import { addProductToCartErrorInfo } from "../errors/info.js";
 import EErrors from "../errors/enums.js";
 import logger from "../utils/logger.utils.js";
-import Swal from "sweetalert2";
 import { sendTicketEmail } from "../utils/email.utils.js";
 
 
